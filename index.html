@@ -1,1682 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Caro: The Software Architect</title>
-    <meta name="description" content="Alex Caro: The Software Architect. Tesla Engineer · UF CS + AI · Tutor · Web Designer.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-    <style>
-        :root {
-            --blue: #0021A5;
-            --blue-dark: #001873;
-            --blue-medium: #1A3A8A;
-            --blue-light: #EBEEF5;
-            --white: #FFFFFF;
-            --off-white: #F8F6F2;
-            --light-gray: #F0EDE8;
-            --orange: #FA4616;
-            --orange-dark: #C2350F;
-            --text-dark: #14213D;
-            --text-medium: #55606B;
-            --text-light: #8A94A6;
-            --line: rgba(20, 33, 61, 0.08);
-            --radius: 6px;
-            --gold: #D4AF37;
-            --red: #DC2626;
-            --green: #16A34A;
-            --math-blue: #2563EB;
-            --purple: #7C3AED;
-            --yellow: #CA8A04;
-            --brown: #92400E;
-            --pink: #DB2777;
-            --teal: #0D9488;
-        }
-        * {
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            margin: 0;
-            font-family: 'Nunito Sans', sans-serif;
-            color: var(--text-dark);
-            background: var(--white);
-            -webkit-font-smoothing: antialiased;
-        }
-        .wrap {
-            max-width: 1040px;
-            margin: 0 auto;
-            padding: 0 28px;
-        }
-        section {
-            padding: 80px 0;
-        }
-        h2.section-title {
-            font-family: 'Fraunces', serif;
-            font-weight: 900;
-            font-size: 34px;
-            margin: 0 0 8px;
-            color: var(--blue);
-        }
-        .alt {
-            background: var(--off-white);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alex Caro | Web Design Tampa</title>
+  <meta name="description" content="Alex Caro builds clean, fast websites for Tampa Bay small businesses. UF CS + AI, Tesla Autopilot Engineer. Flat-rate web design, same-day fixes, and ongoing maintenance." />
+  <meta name="author" content="Alex Caro" />
+  <meta name="theme-color" content="#0B1220" />
+  <link rel="canonical" href="https://alex-caro.github.io/" />
 
-        /* NAV */
-        header.nav {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.90);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--line);
-        }
-        .nav-inner {
-            max-width: 1040px;
-            margin: 0 auto;
-            padding: 0 28px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-        .brand-mark {
-            width: 34px;
-            height: 34px;
-            border-radius: 7px;
-            background: var(--blue);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Fraunces', serif;
-            font-weight: 900;
-            font-size: 15px;
-            position: relative;
-        }
-        .brand-mark::after {
-            content: "";
-            position: absolute;
-            bottom: -3px;
-            right: -3px;
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: var(--orange);
-            border: 2px solid #fff;
-        }
-        .brand-name {
-            font-family: 'Fraunces', serif;
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--blue);
-        }
-        .brand-sub {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-medium);
-            letter-spacing: 0.04em;
-            display: none;
-        }
-        @media (min-width: 600px) {
-            .brand-sub {
-                display: inline;
-            }
-        }
-        nav.links {
-            display: flex;
-            align-items: center;
-            gap: 26px;
-        }
-        nav.links a {
-            font-size: 13.5px;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--text-medium);
-            transition: color 0.2s;
-        }
-        nav.links a:hover {
-            color: var(--blue);
-        }
-        .nav-cta {
-            background: var(--orange);
-            color: #fff !important;
-            padding: 9px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 800 !important;
-            transition: all 0.2s;
-            animation: pulse-cta 2s infinite;
-        }
-        .nav-cta:hover {
-            background: var(--orange-dark) !important;
-            transform: scale(1.05);
-        }
-        @keyframes pulse-cta {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(250, 70, 22, 0.35); }
-            50% { box-shadow: 0 0 0 8px rgba(250, 70, 22, 0); }
-        }
-        .nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--text-dark);
-        }
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Alex Caro | Web Design Tampa" />
+  <meta property="og:description" content="Clean Code. Sharp Design. Built to Last. Web design for Tampa Bay small businesses." />
+  <meta property="og:url" content="https://alex-caro.github.io/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Alex Caro Web Design" />
 
-        @media (max-width: 760px) {
-            nav.links {
-                position: fixed;
-                top: 64px;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: #fff;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 28px;
-                gap: 20px;
-                transform: translateX(100%);
-                transition: transform 0.25s ease;
-                overflow-y: auto;
-                z-index: 100;
-            }
-            nav.links.open {
-                transform: translateX(0);
-            }
-            .nav-toggle {
-                display: block;
-            }
-        }
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Alex Caro | Web Design Tampa" />
+  <meta name="twitter:description" content="Clean Code. Sharp Design. Built to Last. Web design for Tampa Bay small businesses." />
 
-        /* HERO */
-        .hero {
-            padding: 76px 0 70px;
-            background:
-                radial-gradient(circle at 12% 18%, rgba(0, 33, 165, 0.04), transparent 42%),
-                radial-gradient(circle at 88% 8%, rgba(250, 70, 22, 0.05), transparent 40%),
-                var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 48px;
-            align-items: center;
-        }
-        @media (max-width: 820px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .hero-tagline {
-            font-family: 'Fraunces', serif;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--orange);
-            margin-bottom: 6px;
-        }
-
-        .hero-badges {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-        }
-        .badge {
-            padding: 5px 13px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .badge.gator {
-            background: var(--blue);
-            color: #fff;
-        }
-        .badge.tesla {
-            background: var(--text-dark);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-        }
-
-        .hero h1 {
-            font-family: 'Fraunces', serif;
-            font-weight: 900;
-            font-size: 48px;
-            line-height: 1.03;
-            margin: 0 0 14px;
-            color: var(--blue);
-        }
-        .hero h1 .accent {
-            color: var(--orange);
-        }
-        .hero p.lede {
-            font-size: 17px;
-            line-height: 1.6;
-            color: var(--text-medium);
-            max-width: 46ch;
-            margin: 0 0 26px;
-        }
-
-        .offer-banner {
-            background: var(--orange);
-            color: #fff;
-            padding: 16px 20px;
-            border-radius: var(--radius);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .offer-banner strong {
-            font-size: 18px;
-        }
-        .offer-banner span {
-            font-size: 24px;
-            font-weight: 900;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 32px;
-            margin: 24px 0 28px;
-            flex-wrap: wrap;
-        }
-        .hero-stats .stat {
-            display: flex;
-            flex-direction: column;
-        }
-        .hero-stats .stat .number {
-            font-family: 'Fraunces', serif;
-            font-weight: 900;
-            font-size: 28px;
-            color: var(--blue);
-            line-height: 1;
-        }
-        .hero-stats .stat .label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--text-medium);
-            margin-top: 4px;
-        }
-
-        .hero-ctas {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 13px 22px;
-            border-radius: 6px;
-            font-weight: 800;
-            font-size: 14px;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            transition: all 0.25s ease;
-        }
-        .btn-primary {
-            background: var(--orange);
-            color: #fff;
-        }
-        .btn-primary:hover {
-            background: var(--orange-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(250, 70, 22, 0.3);
-        }
-        .btn-outline {
-            background: transparent;
-            color: var(--text-dark);
-            border: 1.5px solid var(--line);
-        }
-        .btn-outline:hover {
-            border-color: var(--blue);
-            background: var(--blue);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        /* TERMINAL */
-        .terminal {
-            background: var(--text-dark);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(13, 13, 13, 0.2);
-        }
-        .terminal-bar {
-            display: flex;
-            gap: 6px;
-            padding: 11px 14px;
-            background: #1b1b1b;
-        }
-        .terminal-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .terminal-dot.r {
-            background: #ff5f56;
-        }
-        .terminal-dot.y {
-            background: #ffbd2e;
-        }
-        .terminal-dot.g {
-            background: #27c93f;
-        }
-        .terminal-body {
-            padding: 22px 20px 26px;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            line-height: 1.75;
-            color: #d7e0ea;
-        }
-        .terminal-body .prompt {
-            color: #7ee787;
-        }
-        .terminal-body .out {
-            color: #fff;
-        }
-        .terminal-body .comment {
-            color: #8b98a5;
-        }
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 14px;
-            background: var(--orange);
-            margin-left: 2px;
-            animation: blink 1s steps(1) infinite;
-            vertical-align: middle;
-        }
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .cursor {
-                animation: none;
-            }
-        }
-
-        /* ABOUT */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1.3fr 0.7fr;
-            gap: 48px;
-        }
-        @media (max-width: 760px) {
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .about-grid p {
-            font-size: 15px;
-            line-height: 1.7;
-            color: var(--text-medium);
-            margin: 0 0 14px;
-        }
-        .fact-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            overflow: hidden;
-            background: #fff;
-        }
-        .fact-list li {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 13px 16px;
-            font-size: 13.5px;
-            border-bottom: 1px solid var(--line);
-        }
-        .fact-list li:last-child {
-            border-bottom: none;
-        }
-        .fact-list .k {
-            color: var(--text-medium);
-            font-weight: 700;
-        }
-        .fact-list .v {
-            font-weight: 700;
-            text-align: right;
-        }
-
-        /* WHO I TEACH */
-        #who-i-teach {
-            scroll-margin-top: 80px;
-        }
-        .age-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 28px;
-        }
-        @media (max-width: 820px) {
-            .age-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .age-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            padding: 28px 24px;
-            text-align: center;
-            transition: all 0.25s ease;
-            border-top: 4px solid var(--blue);
-        }
-        .age-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
-        .age-card .icon {
-            font-size: 36px;
-            display: block;
-            margin-bottom: 8px;
-        }
-        .age-card h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 20px;
-            margin: 0 0 4px;
-            color: var(--blue);
-        }
-        .age-card .ages {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--orange);
-            margin-bottom: 6px;
-        }
-        .age-card p {
-            font-size: 13px;
-            color: var(--text-medium);
-            line-height: 1.5;
-            margin: 0;
-        }
-        .age-card .subjects-tag {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            background: var(--blue-light);
-            color: var(--blue);
-        }
-
-        /* SUBJECTS */
-        #subjects {
-            scroll-margin-top: 80px;
-        }
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-top: 36px;
-        }
-        @media (max-width: 820px) {
-            .subject-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        @media (max-width: 480px) {
-            .subject-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .subject-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            padding: 24px 20px;
-            text-align: center;
-            transition: all 0.25s ease;
-            border-top: 4px solid var(--accent-color, var(--blue));
-        }
-        .subject-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
-        .subject-card .icon {
-            font-size: 32px;
-            display: block;
-            margin-bottom: 8px;
-        }
-        .subject-card h4 {
-            font-family: 'Fraunces', serif;
-            font-size: 16px;
-            margin: 0 0 4px;
-            color: var(--text-dark);
-        }
-        .subject-card p {
-            font-size: 12px;
-            color: var(--text-medium);
-            margin: 0;
-            line-height: 1.4;
-        }
-        .subject-card .topics {
-            font-size: 10.5px;
-            color: var(--text-light);
-            margin-top: 6px;
-        }
-
-        .subject-english { --accent-color: var(--red); }
-        .subject-science { --accent-color: var(--green); }
-        .subject-math { --accent-color: var(--math-blue); }
-        .subject-linguistics { --accent-color: var(--purple); }
-        .subject-economics { --accent-color: var(--yellow); }
-        .subject-history { --accent-color: var(--brown); }
-        .subject-polisci { --accent-color: var(--blue); }
-        .subject-philosophy { --accent-color: var(--purple); }
-        .subject-computer-science { --accent-color: var(--teal); }
-        .subject-public-speaking { --accent-color: var(--pink); }
-        .subject-writing { --accent-color: var(--red); }
-
-        /* WHY PREMIUM */
-        #why-premium {
-            scroll-margin-top: 80px;
-        }
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-top: 28px;
-        }
-        @media (max-width: 820px) {
-            .value-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        @media (max-width: 480px) {
-            .value-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .value-item {
-            text-align: center;
-            padding: 20px;
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            transition: all 0.25s ease;
-        }
-        .value-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
-        .value-item .icon {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .value-item h4 {
-            font-family: 'Fraunces', serif;
-            font-size: 15px;
-            margin: 0 0 4px;
-            color: var(--blue);
-        }
-        .value-item p {
-            font-size: 12.5px;
-            color: var(--text-medium);
-            margin: 0;
-            line-height: 1.4;
-        }
-
-        /* PRICING */
-        #pricing {
-            scroll-margin-top: 80px;
-        }
-        .pricing-table-wrap {
-            overflow-x: auto;
-            margin-top: 28px;
-        }
-        .pricing-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            background: #fff;
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid var(--line);
-        }
-        .pricing-table th {
-            background: var(--blue);
-            color: #fff;
-            padding: 14px 16px;
-            text-align: left;
-            font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-        .pricing-table td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--line);
-            color: var(--text-medium);
-        }
-        .pricing-table tr:last-child td {
-            border-bottom: none;
-        }
-        .pricing-table tr:hover td {
-            background: var(--blue-light);
-        }
-        .pricing-table .highlight-row td {
-            background: rgba(250, 70, 22, 0.05);
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .pricing-table .rate-current {
-            color: var(--orange);
-            font-weight: 800;
-        }
-        .pricing-table .rate-original {
-            text-decoration: line-through;
-            color: var(--text-light);
-            opacity: 0.6;
-            margin-right: 8px;
-            font-size: 13px;
-        }
-        .pricing-table .tag-new {
-            display: inline-block;
-            background: var(--green);
-            color: #fff;
-            font-size: 9px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-left: 6px;
-        }
-        .pricing-table .tag-popular {
-            display: inline-block;
-            background: var(--gold);
-            color: #fff;
-            font-size: 9px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-left: 6px;
-        }
-        .pricing-table h3 {
-            font-family: 'Fraunces', serif;
-            font-weight: 700;
-            font-size: 20px;
-            color: var(--blue);
-            margin: 40px 0 8px;
-        }
-
-        /* OFFERINGS */
-        #offerings {
-            scroll-margin-top: 80px;
-        }
-        .offerings-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 36px;
-        }
-        @media (max-width: 820px) {
-            .offerings-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .offering-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            padding: 28px 24px;
-            text-align: center;
-            transition: all 0.25s ease;
-            border-top: 4px solid var(--orange);
-        }
-        .offering-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
-        .offering-card .icon {
-            font-size: 36px;
-            display: block;
-            margin-bottom: 10px;
-        }
-        .offering-card h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 20px;
-            margin: 0 0 8px;
-            color: var(--blue);
-        }
-        .offering-card p {
-            font-size: 13.5px;
-            color: var(--text-medium);
-            line-height: 1.6;
-            margin: 0 0 12px;
-        }
-        .offering-card .price-tag {
-            display: inline-block;
-            background: var(--blue-light);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 14px;
-            color: var(--orange);
-            margin-bottom: 12px;
-        }
-        .offering-card .subjects-list {
-            font-size: 12px;
-            color: var(--text-medium);
-            line-height: 1.6;
-        }
-        .offering-card .subjects-list span {
-            display: inline-block;
-            background: var(--off-white);
-            padding: 2px 10px;
-            border-radius: 12px;
-            margin: 2px 3px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-medium);
-        }
-
-        /* REVIEWS */
-        #reviews {
-            scroll-margin-top: 80px;
-        }
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 36px;
-        }
-        @media (max-width: 820px) {
-            .reviews-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .review-card {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            padding: 24px 22px;
-            position: relative;
-            transition: all 0.25s ease;
-        }
-        .review-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-        }
-        .review-card .stars {
-            color: var(--orange);
-            font-size: 18px;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-        }
-        .review-card .quote {
-            font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-medium);
-            margin: 0 0 12px;
-            font-style: italic;
-        }
-        .review-card .reviewer {
-            font-weight: 800;
-            font-size: 13px;
-            color: var(--text-dark);
-        }
-        .review-card .reviewer-detail {
-            font-size: 12px;
-            color: var(--text-light);
-            display: block;
-        }
-
-        /* FAQ */
-        #faq {
-            scroll-margin-top: 80px;
-        }
-        .faq-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 32px;
-        }
-        @media (max-width: 640px) {
-            .faq-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        .faq-item {
-            background: #fff;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            padding: 20px 22px;
-            transition: all 0.25s ease;
-        }
-        .faq-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-        }
-        .faq-item h4 {
-            font-family: 'Fraunces', serif;
-            font-size: 15px;
-            margin: 0 0 6px;
-            color: var(--blue);
-        }
-        .faq-item p {
-            font-size: 13px;
-            color: var(--text-medium);
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        /* RESUME */
-        #resume {
-            scroll-margin-top: 80px;
-        }
-        .resume-box {
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 36px;
-            margin-top: 28px;
-            background: #fff;
-        }
-        .resume-box h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 15px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--blue);
-            margin: 26px 0 10px;
-        }
-        .resume-box h3:first-child {
-            margin-top: 0;
-        }
-        .resume-box ul {
-            margin: 0;
-            padding-left: 18px;
-            font-size: 13.5px;
-            color: var(--text-medium);
-            line-height: 1.7;
-        }
-        .resume-box .r-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 8px;
-            border-bottom: 2px solid var(--blue);
-            padding-bottom: 14px;
-        }
-        .resume-box .r-name {
-            font-family: 'Fraunces', serif;
-            font-weight: 900;
-            font-size: 24px;
-            color: var(--blue);
-        }
-        .resume-box .r-contact {
-            font-size: 12.5px;
-            font-family: 'IBM Plex Mono', monospace;
-            color: var(--text-medium);
-        }
-        .transcript-note {
-            margin-top: 18px;
-            padding: 14px 18px;
-            background: var(--off-white);
-            border-radius: var(--radius);
-            font-size: 13px;
-            color: var(--text-medium);
-        }
-
-        /* CONTACT */
-        #contact {
-            scroll-margin-top: 80px;
-        }
-        .contact-box {
-            background: var(--blue);
-            color: #fff;
-            border-radius: 10px;
-            padding: 44px 40px;
-            margin-top: 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
-        .contact-box h3 {
-            font-family: 'Fraunces', serif;
-            font-size: 24px;
-            margin: 0 0 6px;
-        }
-        .contact-box p {
-            margin: 0;
-            color: #c9d2dd;
-            font-size: 14px;
-        }
-        .contact-links {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .contact-links a {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            padding: 11px 18px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #fff;
-            font-weight: 700;
-            font-size: 13.5px;
-            transition: all 0.25s ease;
-        }
-        .contact-links a:hover {
-            background: var(--orange);
-            border-color: var(--orange);
-            transform: translateY(-2px);
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 44px;
-            height: 44px;
-            background: var(--orange);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(250, 70, 22, 0.3);
-            z-index: 90;
-        }
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        .back-to-top:hover {
-            background: var(--orange-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(250, 70, 22, 0.4);
-        }
-
-        footer {
-            padding: 34px 0;
-            text-align: center;
-            font-size: 12.5px;
-            color: var(--text-medium);
-            border-top: 1px solid var(--line);
-        }
-        footer .foot-tagline {
-            font-family: 'Fraunces', serif;
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--blue);
-            margin-bottom: 4px;
-        }
-        footer .foot-services {
-            margin-bottom: 8px;
-            opacity: 0.7;
-            font-size: 12px;
-        }
-        footer a {
-            color: var(--blue);
-            font-weight: 600;
-        }
-        footer a:hover {
-            color: var(--orange);
-        }
-
-        @media print {
-            body.print-resume>header,
-            body.print-resume>.hero,
-            body.print-resume>#about,
-            body.print-resume>#subjects,
-            body.print-resume>#who-i-teach,
-            body.print-resume>#why-premium,
-            body.print-resume>#pricing,
-            body.print-resume>#offerings,
-            body.print-resume>#contact,
-            body.print-resume>#reviews,
-            body.print-resume>#faq,
-            body.print-resume>footer,
-            body.print-resume .back-to-top,
-            body.print-resume #resume .transcript-note,
-            body.print-resume #resume p.section-kicker,
-            body.print-resume #resume h2.section-title {
-                display: none !important;
-            }
-            body.print-resume #resume {
-                padding: 0 !important;
-            }
-            body.print-resume .resume-box {
-                border: none;
-                padding: 0;
-                box-shadow: none;
-            }
-            body.print-resume .resume-box .r-head {
-                border-bottom-color: #000;
-            }
-            body.print-resume .resume-box h3 {
-                color: #000;
-            }
-        }
-    </style>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="nav">
-        <div class="nav-inner">
-            <a class="brand" href="#top">
-                <span class="brand-mark">AC</span>
-                <span class="brand-name">Alex Caro</span>
-                <span class="brand-sub">The Software Architect</span>
-            </a>
-            <nav class="links" id="navLinks">
-                <a href="#about">About Me</a>
-                <a href="#who-i-teach">Who I Teach</a>
-                <a href="#subjects">Subjects</a>
-                <a href="#offerings">Offerings</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#reviews">Reviews</a>
-                <a href="#faq">FAQ</a>
-                <a href="#resume">Resume</a>
-                <a href="#contact" class="nav-cta">Book Now</a>
-            </nav>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
-        </div>
-    </header>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="#top" aria-label="Alex Caro home">
+        <span class="logo-mark" aria-hidden="true">AC</span>
+        <span>Alex Caro<em> Web Design</em></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#about">About</a>
+        <a class="nav-cta" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- HERO -->
-    <div class="hero" id="top">
-        <div class="wrap hero-grid">
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div>
+          <p class="hero-eyebrow">Tampa Bay web design</p>
+          <h1>
+            Websites that look sharp and
+            <span class="line-accent">actually work</span>
+            for your business.
+          </h1>
+          <p class="hero-lead">
+            Clean Code. Sharp Design. Built to Last. I design and build fast, mobile-ready sites for Tampa small businesses. No agencies. No middlemen.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="tel:+18139194939">Text or call (813) 919-4939</a>
+            <a class="btn btn-secondary" href="#work">See the work</a>
+          </div>
+          <div class="hero-meta">
             <div>
-                <div class="hero-tagline">Alex Caro: The Software Architect</div>
-                <div class="hero-badges">
-                    <span class="badge gator">&#128009; University of Florida Gator</span>
-                    <span class="badge tesla">&#9889; Tesla Autopilot Engineer</span>
-                </div>
-                <h1>Think Smarter.<br>Write Sharper.<br><span class="accent">Debate Better.</span></h1>
-                <p class="lede">I build understanding the way I build software. Clean, structured, and made to last. English, Political Science, Computer Science, and everything in between.</p>
-
-                <div class="offer-banner">
-                    <strong>🎯 New Student Offer:</strong> First session just <span>$45</span> (regularly $85). See the difference.
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="number">25+</span>
-                        <span class="label">Students Tutored</span>
-                    </div>
-                    <div class="stat">
-                        <span class="number">12+</span>
-                        <span class="label">Subjects</span>
-                    </div>
-                    <div class="stat">
-                        <span class="number">6</span>
-                        <span class="label">Grade Levels</span>
-                    </div>
-                </div>
-                <div class="hero-ctas">
-                    <a class="btn btn-primary" href="#who-i-teach">Who I Teach</a>
-                    <a class="btn btn-outline" href="#contact">Got an idea? Let's collab!</a>
-                </div>
+              <strong>Same-day fixes</strong>
+              from $75
             </div>
-            <div class="terminal">
-                <div class="terminal-bar">
-                    <span class="terminal-dot r"></span><span class="terminal-dot y"></span><span class="terminal-dot g"></span>
-                </div>
-                <div class="terminal-body">
-                    <div><span class="prompt">alex@uf</span><span class="comment">:~$</span> whoami</div>
-                    <div class="out">Alex Caro: The Software Architect</div>
-                    <div class="out">Computer Science + AI @ University of Florida</div>
-                    <div class="out">Autopilot Engineer @ Tesla</div>
-                    <div>&nbsp;</div>
-                    <div><span class="prompt">alex@uf</span><span class="comment">:~$</span> subjects --list</div>
-                    <div class="out">English, Political Science, Linguistics, Philosophy</div>
-                    <div class="out">Computer Science, Math, Economics, History</div>
-                    <div class="out">Public Speaking, Writing, IB, and more</div>
-                    <div>&nbsp;</div>
-                    <div><span class="prompt">alex@uf</span><span class="comment">:~$</span> <span class="cursor"></span></div>
-                </div>
+            <div>
+              <strong>Flat project rates</strong>
+              from $800
             </div>
+            <div>
+              <strong>Local support</strong>
+              Tampa / 813
+            </div>
+          </div>
         </div>
+        <aside class="hero-card" aria-label="Starting rates">
+          <div class="hero-card-top">
+            <p class="tagline">Technology that works as hard as you do.</p>
+            <p>Straightforward pricing. No surprise invoices.</p>
+          </div>
+          <div class="hero-card-body">
+            <div class="rate-preview">
+              <div class="rate-row">
+                <span>Basic Website</span>
+                <strong>$800</strong>
+              </div>
+              <div class="rate-row">
+                <span>Business Website</span>
+                <strong>$1,600</strong>
+              </div>
+              <div class="rate-row">
+                <span>Custom Web App</span>
+                <strong>$2,500+</strong>
+              </div>
+              <div class="rate-row">
+                <span>Maintenance</span>
+                <strong>$100/mo</strong>
+              </div>
+              <div class="rate-row">
+                <span>Same-day quick fix</span>
+                <strong class="hot">from $75</strong>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Credibility -->
+    <div class="cred" aria-label="Credentials">
+      <div class="container cred-inner">
+        <span class="badge-pill uf"><span class="dot" aria-hidden="true"></span> UF · CS + AI</span>
+        <span class="cred-dot" aria-hidden="true">·</span>
+        <span class="badge-pill tesla"><span class="dot" aria-hidden="true"></span> Tesla Autopilot</span>
+        <span class="cred-dot" aria-hidden="true">·</span>
+        <span class="badge-pill ib"><span class="dot" aria-hidden="true"></span> IB Graduate</span>
+        <span class="cred-dot" aria-hidden="true">·</span>
+        <span class="badge-pill"><span class="dot" style="background:#7DD3FC" aria-hidden="true"></span> Tampa Bay</span>
+      </div>
     </div>
 
-    <!-- ABOUT -->
-    <section id="about">
-        <div class="wrap about-grid">
-            <div>
-                <h2 class="section-title">Software Architect. Autopilot Engineer. The Software Architect.</h2>
-                <p>I'm a Computer Science student at the University of Florida with a completed Artificial Intelligence minor. I work as an Autopilot Engineer at Tesla, and I've been building websites and teaching for years.</p>
-                <p>I've tutored students in English, Political Science, Linguistics, Philosophy, Computer Science, Math, Economics, History, and Public Speaking. I teach the way I wish I was taught. I show how subjects connect instead of just memorizing facts.</p>
-                <p style="font-style:italic;color:var(--blue);font-weight:600;">"Most tutors teach one subject. I teach how subjects relate. That's what makes things click."</p>
-            </div>
-            <ul class="fact-list">
-                <li><span class="k">Based</span><span class="v">Tampa, Florida</span></li>
-                <li><span class="k">Education</span><span class="v">Computer Science + AI, University of Florida</span></li>
-                <li><span class="k">Titles</span><span class="v">Autopilot Engineer · Software Architect · Tutor · Web Designer</span></li>
-                <li><span class="k">Teaches</span><span class="v">K-12 through College</span></li>
-                <li><span class="k">High School</span><span class="v">Braulio Alonso HS, Inaugural Class</span></li>
+    <!-- Services -->
+    <section class="services" id="services">
+      <div class="container">
+        <p class="section-label">Services</p>
+        <h2 class="section-title">Packages built for small businesses</h2>
+        <p class="section-lead">Pick a clear starting point. Every site is responsive, fast, and easy for you to update or hand off.</p>
+
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">◈</div>
+            <h3>Basic Website</h3>
+            <p class="service-price">$800</p>
+            <p class="service-desc">A clean, professional presence for new or growing businesses.</p>
+            <ul class="service-includes">
+              <li>3-5 pages, fully responsive</li>
+              <li>Contact form wired to your email</li>
+              <li>SEO-ready structure and meta</li>
+              <li>Launch on your domain or GitHub Pages</li>
             </ul>
+          </article>
+
+          <article class="service-card featured">
+            <div class="service-icon" aria-hidden="true">◆</div>
+            <h3>Business Website</h3>
+            <p class="service-price">$1,600</p>
+            <p class="service-desc">More pages, more polish, and tools that bring in customers.</p>
+            <ul class="service-includes">
+              <li>5-10 pages with custom layout</li>
+              <li>Booking system or e-commerce basics</li>
+              <li>Google-friendly SEO setup</li>
+              <li>Analytics and conversion tracking</li>
+            </ul>
+          </article>
+
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">▣</div>
+            <h3>Custom Web Application</h3>
+            <p class="service-price">$2,500<small>+</small></p>
+            <p class="service-desc">When a brochure site is not enough. Dashboards, portals, workflows.</p>
+            <ul class="service-includes">
+              <li>Scoped features and architecture</li>
+              <li>Database integration</li>
+              <li>Auth and admin as needed</li>
+              <li>You own the code</li>
+            </ul>
+          </article>
         </div>
+
+        <div class="fixes-bar">
+          <div>
+            <h3>Same-day website fixes</h3>
+            <p>Broken form, outdated copy, mobile bug, or a quick landing tweak. Text me and I usually turn it around the same day.</p>
+          </div>
+          <div class="fix-tiers" aria-label="Fix pricing tiers">
+            <span class="fix-tier">Quick<strong>$75</strong></span>
+            <span class="fix-tier">Standard<strong>$150</strong></span>
+            <span class="fix-tier">Complex<strong>$200</strong></span>
+            <span class="fix-tier">Maintenance<strong>$100/mo</strong></span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- WHO I TEACH -->
-    <section id="who-i-teach" class="alt">
-        <div class="wrap">
-            <h2 class="section-title">Who I Teach</h2>
-            <p style="font-size:15px;color:var(--text-medium);max-width:56ch;margin:0 0 8px;">I work with students at every stage. Whether you're helping a kindergartner build confidence or a high school junior preparing for college, I adapt to where they are.</p>
-            <div class="age-grid">
-                <div class="age-card">
-                    <span class="icon">🧒</span>
-                    <h3>Elementary</h3>
-                    <div class="ages">Grades K-5</div>
-                    <p>Building foundational skills in reading, writing, math, and science. Creating confidence early.</p>
-                    <span class="subjects-tag">Reading · Writing · Math · Science</span>
-                </div>
-                <div class="age-card">
-                    <span class="icon">📚</span>
-                    <h3>Middle School</h3>
-                    <div class="ages">Grades 6-8</div>
-                    <p>Strengthening core subjects while introducing critical thinking, essays, and study skills.</p>
-                    <span class="subjects-tag">English · History · Math · Science</span>
-                </div>
-                <div class="age-card">
-                    <span class="icon">🎓</span>
-                    <h3>High School &amp; IB</h3>
-                    <div class="ages">Grades 9-12</div>
-                    <p>College-prep tutoring across all subjects. AP, IB, SAT/ACT prep, and college application essays.</p>
-                    <span class="subjects-tag">IB · AP · SAT/ACT · College Essays</span>
-                </div>
-            </div>
+    <!-- Work -->
+    <section class="work" id="work">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-label">Work</p>
+            <h2 class="section-title">Selected concepts for Tampa Bay</h2>
+            <p class="section-lead">Concept redesigns and local-style placeholders that show how your brand can look online.</p>
+          </div>
         </div>
+
+        <div class="work-grid">
+          <article class="work-featured">
+            <div class="work-visual bakery" aria-hidden="true">
+              <svg class="gull g1" width="36" height="20" viewBox="0 0 36 20" fill="none" aria-hidden="true"><path d="M2 14c6-2 10-8 12-10 2 4 4 8 10 10-6 0-10 2-12 4-2-2-6-4-10-4z" fill="#1a3a5c" opacity="0.25"/><path d="M18 10c4-1 7-5 8-6 1 2 3 5 7 6-4 0-6 1-8 3-1-1-4-3-7-3z" fill="#1a3a5c" opacity="0.18"/></svg>
+              <svg class="gull g2" width="28" height="16" viewBox="0 0 28 16" fill="none" aria-hidden="true"><path d="M2 11c5-2 8-6 9-8 1 3 3 6 8 8-5 0-7 1-9 3-1-1-4-3-8-3z" fill="#1a3a5c" opacity="0.2"/></svg>
+              <div class="bakery-mock">
+                <div class="bakery-chrome"><i></i><i></i><i></i></div>
+                <div class="bakery-content">
+                  <p class="bakery-brand">Baygulls Bakery</p>
+                  <p class="bakery-sub">Tampa · NY-style bagels</p>
+                  <div class="bakery-hero-line"></div>
+                  <div class="bakery-hero-line short"></div>
+                  <div class="bakery-pills"><span></span><span></span><span></span></div>
+                </div>
+              </div>
+            </div>
+            <div class="work-info">
+              <span class="work-tag">Featured concept</span>
+              <h3>Baygulls Bakery</h3>
+              <p>
+                Redesign concept for a Tampa bagel shop with NY-style energy and a light sky-blue flock vibe. Menu-first layout, clear hours, and a path to order or visit that feels as warm as the shop.
+              </p>
+              <div class="work-meta">
+                <span class="chip">Brand refresh</span>
+                <span class="chip">Menu UX</span>
+                <span class="chip">Mobile-first</span>
+              </div>
+            </div>
+          </article>
+
+          <div class="work-side">
+            <article class="work-card">
+              <div class="work-card-visual cafe" aria-hidden="true">
+                <span class="placeholder-label">Harbor Roast Cafe</span>
+              </div>
+              <div class="work-info">
+                <span class="work-tag">Cafe · Tampa</span>
+                <h3>Harbor Roast Cafe</h3>
+                <p>Warm, local coffee shop site with hours, menu, and Instagram-ready photo grid.</p>
+                <div class="work-meta">
+                  <span class="chip">Responsive</span>
+                  <span class="chip">SEO</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-card-visual contractor" aria-hidden="true">
+                <span class="placeholder-label">Gulf Coast Builds</span>
+              </div>
+              <div class="work-info">
+                <span class="work-tag">Contractor · Tampa Bay</span>
+                <h3>Gulf Coast Builds</h3>
+                <p>Trust-first contractor site with project gallery, service areas, and a simple estimate form.</p>
+                <div class="work-meta">
+                  <span class="chip">Lead gen</span>
+                  <span class="chip">Gallery</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card">
+              <div class="work-card-visual salon" aria-hidden="true">
+                <span class="placeholder-label">Palm &amp; Pin Salon</span>
+              </div>
+              <div class="work-info">
+                <span class="work-tag">Salon · St. Pete</span>
+                <h3>Palm &amp; Pin Salon</h3>
+                <p>Elegant booking-ready salon site with services, stylists, and online appointment CTA.</p>
+                <div class="work-meta">
+                  <span class="chip">Booking</span>
+                  <span class="chip">Brand</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- SUBJECTS -->
-    <section id="subjects">
-        <div class="wrap">
-            <h2 class="section-title">Subjects</h2>
-            <p style="font-size:15px;color:var(--text-medium);max-width:56ch;margin:0 0 8px;">From IB to public speaking, I cover a wide range of subjects. Each one taught with the same approach. Connect the dots. Make it stick.</p>
-            <div class="subject-grid">
-                <div class="subject-card subject-english">
-                    <span class="icon">✍️</span>
-                    <h4>English</h4>
-                    <p>Writing, essays, and analysis</p>
-                    <div class="topics">IB English · AP Language · College Essays</div>
-                </div>
-                <div class="subject-card subject-polisci">
-                    <span class="icon">🏛️</span>
-                    <h4>Political Science</h4>
-                    <p>Government, civics, and current events</p>
-                    <div class="topics">IB History · AP Gov · Comparative Politics</div>
-                </div>
-                <div class="subject-card subject-linguistics">
-                    <span class="icon">🗣️</span>
-                    <h4>Linguistics</h4>
-                    <p>How language works and where words come from</p>
-                    <div class="topics">Etymology · SAT Vocabulary · Language Origins</div>
-                </div>
-                <div class="subject-card subject-philosophy">
-                    <span class="icon">🤔</span>
-                    <h4>Philosophy</h4>
-                    <p>Ethics, logic, and clear thinking</p>
-                    <div class="topics">IB Philosophy · Logic · Critical Thinking</div>
-                </div>
-                <div class="subject-card subject-public-speaking">
-                    <span class="icon">🎤</span>
-                    <h4>Public Speaking</h4>
-                    <p>Speeches, debates, and presentations</p>
-                    <div class="topics">Debate · Presentations · Interview Prep</div>
-                </div>
-                <div class="subject-card subject-writing">
-                    <span class="icon">📝</span>
-                    <h4>Academic Writing</h4>
-                    <p>Essays, research papers, and personal statements</p>
-                    <div class="topics">IB Extended Essay · College Apps · Research</div>
-                </div>
-                <div class="subject-card subject-computer-science">
-                    <span class="icon">💻</span>
-                    <h4>Computer Science</h4>
-                    <p>Programming, algorithms, and AI</p>
-                    <div class="topics">C++ · Python · AI · Data Science</div>
-                </div>
-                <div class="subject-card subject-history">
-                    <span class="icon">📜</span>
-                    <h4>History</h4>
-                    <p>World history, US history, and analysis</p>
-                    <div class="topics">IB History · APUSH · European History</div>
-                </div>
-                <div class="subject-card subject-economics">
-                    <span class="icon">📊</span>
-                    <h4>Economics</h4>
-                    <p>Micro, macro, and economic theory</p>
-                    <div class="topics">IB Economics · AP Macro · AP Micro</div>
-                </div>
-                <div class="subject-card subject-math">
-                    <span class="icon">📐</span>
-                    <h4>Mathematics</h4>
-                    <p>Algebra, calculus, and statistics</p>
-                    <div class="topics">IB Math · AP Calculus · AP Statistics</div>
-                </div>
-                <div class="subject-card subject-science">
-                    <span class="icon">🔬</span>
-                    <h4>Science</h4>
-                    <p>Physics, biology, and chemistry</p>
-                    <div class="topics">IB Physics · AP Biology · AP Chemistry</div>
-                </div>
-                <div class="subject-card subject-english">
-                    <span class="icon">🌍</span>
-                    <h4>IB Diploma</h4>
-                    <p>Full support across all IB subjects</p>
-                    <div class="topics">Theory of Knowledge · Extended Essay · IB Exams</div>
-                </div>
-            </div>
-        </div>
+    <!-- Process -->
+    <section class="process" id="process">
+      <div class="container">
+        <p class="section-label">Process</p>
+        <h2 class="section-title">Four steps. No runaround.</h2>
+        <p class="section-lead">You talk to me directly from first message to launch day.</p>
+
+        <ol class="process-steps">
+          <li class="process-step">
+            <div class="step-num">1</div>
+            <h3>Chat</h3>
+            <p>Tell me about your business, goals, and timeline. Free, no pressure.</p>
+          </li>
+          <li class="process-step">
+            <div class="step-num">2</div>
+            <h3>Design</h3>
+            <p>I sketch a clear direction that fits your brand and your customers.</p>
+          </li>
+          <li class="process-step">
+            <div class="step-num">3</div>
+            <h3>Build</h3>
+            <p>Clean, fast code. You review on a staging link before anything goes live.</p>
+          </li>
+          <li class="process-step">
+            <div class="step-num">4</div>
+            <h3>Launch</h3>
+            <p>We ship, wire analytics if you want, and I stay available for tweaks.</p>
+          </li>
+        </ol>
+      </div>
     </section>
 
-    <!-- OFFERINGS / PACKAGES -->
-    <section id="offerings" class="alt">
-        <div class="wrap">
-            <h2 class="section-title">Offerings</h2>
-            <p style="font-size:15px;color:var(--text-medium);max-width:56ch;margin:0 0 8px;">Designed for depth. Each package combines subjects that work together.</p>
-            <div class="offerings-grid">
-                <div class="offering-card">
-                    <span class="icon">🎓</span>
-                    <h3>College Prep</h3>
-                    <div class="price-tag">$85/hr · $45 first session</div>
-                    <p>English, Political Science, and Philosophy for students targeting competitive colleges.</p>
-                    <div class="subjects-list">
-                        <span>English</span>
-                        <span>Political Science</span>
-                        <span>Philosophy</span>
-                        <span>Writing</span>
-                    </div>
-                </div>
-                <div class="offering-card">
-                    <span class="icon">🧠</span>
-                    <h3>IB Diploma Support</h3>
-                    <div class="price-tag">$85/hr · $45 first session</div>
-                    <p>Full IB support across all subjects, including the Extended Essay.</p>
-                    <div class="subjects-list">
-                        <span>IB English</span>
-                        <span>IB History</span>
-                        <span>IB Economics</span>
-                        <span>IB Math</span>
-                        <span>TOK</span>
-                    </div>
-                </div>
-                <div class="offering-card">
-                    <span class="icon">🎤</span>
-                    <h3>Public Speaking &amp; Debate</h3>
-                    <div class="price-tag">$85/hr · $45 first session</div>
-                    <p>Speechwriting, delivery, debate strategy, and presentation skills.</p>
-                    <div class="subjects-list">
-                        <span>Public Speaking</span>
-                        <span>Debate</span>
-                        <span>Presentations</span>
-                        <span>Rhetoric</span>
-                    </div>
-                </div>
-                <div class="offering-card">
-                    <span class="icon">🌍</span>
-                    <h3>Humanities Intensive</h3>
-                    <div class="price-tag">$85/hr · $45 first session</div>
-                    <p>English, History, Philosophy, and Political Science for the well-rounded student.</p>
-                    <div class="subjects-list">
-                        <span>English</span>
-                        <span>History</span>
-                        <span>Philosophy</span>
-                        <span>Political Science</span>
-                    </div>
-                </div>
-                <div class="offering-card">
-                    <span class="icon">📝</span>
-                    <h3>Essay &amp; Writing Workshop</h3>
-                    <div class="price-tag">$85/hr · $45 first session</div>
-                    <p>College essays, research papers, op-eds, and the IB Extended Essay.</p>
-                    <div class="subjects-list">
-                        <span>Academic Writing</span>
-                        <span>College Essays</span>
-                        <span>Research Papers</span>
-                        <span>IB Extended Essay</span>
-                    </div>
-                </div>
-                <div class="offering-card">
-                    <span class="icon">⚡</span>
-                    <h3>Custom Bundle</h3>
-                    <div class="price-tag">$85/hr · $45 first session</div>
-                    <p>Your choice of any 3 subjects. Built around your child's goals.</p>
-                    <div class="subjects-list">
-                        <span>Pick Any 3</span>
-                        <span>Custom Curriculum</span>
-                        <span>Flexible Scheduling</span>
-                    </div>
-                </div>
-            </div>
+    <!-- About -->
+    <section class="about" id="about">
+      <div class="container about-grid">
+        <div class="about-portrait" aria-hidden="true">
+          <span class="initials">AC</span>
+          <p class="name">Alex Caro</p>
+          <p class="role">AP Engineer · Web Designer · Tampa, FL</p>
+          <div class="about-badges">
+            <span class="cred-badge ib"><span class="ring"></span> IB</span>
+            <span class="cred-badge uf"><span class="ring"></span> UF</span>
+            <span class="cred-badge tesla"><span class="ring"></span> Tesla</span>
+          </div>
         </div>
+        <div class="about-copy">
+          <p class="section-label">About</p>
+          <h2 class="section-title">Engineering background. Local support.</h2>
+          <p>
+            I studied <strong>Computer Science + AI at the University of Florida</strong> and work as a <strong>Tesla Autopilot Engineer</strong>. On the side, I build websites for Tampa Bay businesses that want something sharper than a template and simpler than an agency.
+          </p>
+          <p>
+            You get direct communication, honest timelines, and code you actually own. I am an IB graduate based in the 813. When something breaks, you text the person who built it.
+          </p>
+          <p>
+            Does your business feel behind the competition? Let’s fix that with a site that loads fast, looks intentional, and turns visitors into customers.
+          </p>
+          <div class="about-signoff">
+            <strong>Alex Caro</strong>
+            Tampa, FL | AP Engineer | Web Designer
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- WHY PREMIUM -->
-    <section id="why-premium">
-        <div class="wrap">
-            <h2 class="section-title">Why Parents Choose Me</h2>
-            <p style="font-size:15px;color:var(--text-medium);max-width:56ch;margin:0 0 8px;">You're not paying for worksheets. You're paying for a tutor who makes things click.</p>
-            <div class="value-grid">
-                <div class="value-item">
-                    <span class="icon">📈</span>
-                    <h4>Better Grades</h4>
-                    <p>Students actually understand the material, not just memorize it</p>
-                </div>
-                <div class="value-item">
-                    <span class="icon">📝</span>
-                    <h4>Stronger Essays</h4>
-                    <p>College applications and papers that stand out</p>
-                </div>
-                <div class="value-item">
-                    <span class="icon">🗣️</span>
-                    <h4>More Confidence</h4>
-                    <p>Students participate more and stress less</p>
-                </div>
-                <div class="value-item">
-                    <span class="icon">🏆</span>
-                    <h4>College Ready</h4>
-                    <p>Skills that actually matter for college and beyond</p>
-                </div>
-            </div>
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <p class="section-label">Pricing</p>
+        <h2 class="section-title">Clear rates. No hidden fees.</h2>
+        <p class="section-lead">Flat project pricing so you know the investment before we start.</p>
+
+        <div class="pricing-table-wrap">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th scope="col">Service</th>
+                <th scope="col">What’s included</th>
+                <th scope="col">Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Same-day website fixes</td>
+                <td>Quick / standard / complex scope</td>
+                <td class="price-cell accent">$75 / $150 / $200</td>
+              </tr>
+              <tr>
+                <td>Basic Website</td>
+                <td>3-5 pages, responsive, contact form</td>
+                <td class="price-cell">$800</td>
+              </tr>
+              <tr>
+                <td>Business Website</td>
+                <td>5-10 pages, booking or e-commerce</td>
+                <td class="price-cell">$1,600</td>
+              </tr>
+              <tr>
+                <td>Custom Web Application</td>
+                <td>Scoped build with real product features</td>
+                <td class="price-cell">$2,500+</td>
+              </tr>
+              <tr>
+                <td>Website Maintenance</td>
+                <td>Updates, monitoring, small fixes</td>
+                <td class="price-cell">$100/mo</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-    </section>
-
-    <!-- PRICING -->
-    <section id="pricing" class="alt">
-        <div class="wrap">
-            <h2 class="section-title">Pricing</h2>
-            <p style="font-size:15px;color:var(--text-medium);max-width:56ch;margin:0 0 8px;">Clear pricing with a new student offer. My time is valuable, and so is your child's education.</p>
-
-            <h3>Tutoring &amp; Academic Support</h3>
-            <div class="pricing-table-wrap">
-                <table class="pricing-table">
-                    <thead>
-                        <tr>
-                            <th>Service</th>
-                            <th>Format</th>
-                            <th>Standard Rate</th>
-                            <th>New Student Offer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>1-on-1 Tutoring</strong></td>
-                            <td>Private, personalized</td>
-                            <td class="rate-current">$85/hr</td>
-                            <td><span class="rate-original">$85</span> <span class="rate-current">$45</span> <span class="tag-new">First Session</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Study Pod (2-3 students)</strong></td>
-                            <td>Per student</td>
-                            <td class="rate-current">$55/hr</td>
-                            <td><span class="rate-original">$55</span> <span class="rate-current">$45</span> <span class="tag-new">First Session</span></td>
-                        </tr>
-                        <tr class="highlight-row">
-                            <td><strong>Study Pod (4-5 students)</strong></td>
-                            <td>Per student</td>
-                            <td class="rate-current">$45/hr</td>
-                            <td><span class="rate-original">$45</span> <span class="rate-current">$40</span> <span class="tag-new">First Session</span> <span class="tag-popular">Best Value</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Group Lecture</strong></td>
-                            <td>5-10 students, 60-90 min</td>
-                            <td class="rate-current">$300/session</td>
-                            <td><span class="rate-original">$300</span> <span class="rate-current">$200</span> <span class="tag-new">First Session</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Package (4 sessions)</strong></td>
-                            <td>Discounted bundle</td>
-                            <td class="rate-current">$320 ($80/hr)</td>
-                            <td><span class="rate-original">$320</span> <span class="rate-current">$250</span> <span class="tag-new">First Package</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3>Web Design &amp; Development</h3>
-            <div class="pricing-table-wrap">
-                <table class="pricing-table">
-                    <thead>
-                        <tr>
-                            <th>Service</th>
-                            <th>Description</th>
-                            <th>Rate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Basic Website</strong></td>
-                            <td>3-5 pages, responsive, contact form</td>
-                            <td class="rate-current">$800 flat</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Business Website</strong></td>
-                            <td>5-10 pages, booking or e-commerce</td>
-                            <td class="rate-current">$1,600 flat</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Custom Web Application</strong></td>
-                            <td>Tailored software, database integration</td>
-                            <td class="rate-current">$2,500+ project</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Website Maintenance</strong></td>
-                            <td>Monthly updates, security, support</td>
-                            <td class="rate-current">$100/mo</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <p style="font-size:13px;color:var(--text-light);margin-top:12px;">* New student offer applies to your first tutoring session only. Standard rates apply after.</p>
-        </div>
-    </section>
-
-    <!-- REVIEWS -->
-    <section id="reviews">
-        <div class="wrap">
-            <h2 class="section-title">Reviews</h2>
-            <div class="reviews-grid">
-                <div class="review-card">
-                    <div class="stars">★★★★★</div>
-                    <p class="quote">"Alex helped my daughter transform her college essay. She got into her top choice school."</p>
-                    <div class="reviewer">Susan Martinez</div>
-                    <span class="reviewer-detail">Parent of High School Senior</span>
-                </div>
-                <div class="review-card">
-                    <div class="stars">★★★★★</div>
-                    <p class="quote">"My son struggled with IB History until Alex taught him how to build arguments and support them with evidence. His grade went from a 4 to a 6."</p>
-                    <div class="reviewer">David Okafor</div>
-                    <span class="reviewer-detail">Parent of IB Student</span>
-                </div>
-                <div class="review-card">
-                    <div class="stars">★★★★★</div>
-                    <p class="quote">"I was failing Data Structures. Alex broke it down until it made sense. My grade went from a D to a B+."</p>
-                    <div class="reviewer">James Rodriguez</div>
-                    <span class="reviewer-detail">UF Computer Science Major</span>
-                </div>
-            </div>
-        </div>
+        <p class="pricing-note">Venmo accepted. Larger projects can be split into milestones. Ask if you need a custom quote.</p>
+      </div>
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="alt">
-        <div class="wrap">
-            <h2 class="section-title">FAQ</h2>
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <h4>Do you tutor online or in-person?</h4>
-                    <p>Both. Virtual sessions via Zoom or Google Meet, and in-person in the Tampa area.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>What ages do you teach?</h4>
-                    <p>Kindergarten through college. I adapt to where the student is at.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>What subjects do you cover?</h4>
-                    <p>English, Political Science, Linguistics, Philosophy, Computer Science, Math, Economics, History, Public Speaking, Writing, and IB support.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>How does payment work?</h4>
-                    <p>I accept Venmo. Payment is due at the time of service.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>What is your availability?</h4>
-                    <p>Weekday evenings and weekends. Limited daytime slots. Book early.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>What is your teaching style?</h4>
-                    <p>I show how subjects connect. I don't just teach facts. I teach understanding.</p>
-                </div>
-            </div>
+    <section class="faq" id="faq">
+      <div class="container">
+        <p class="section-label">FAQ</p>
+        <h2 class="section-title">Common questions</h2>
+        <p class="section-lead">Straight answers before you reach out.</p>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>How long does a typical site take?</summary>
+            <p class="answer">Most Basic sites ship in about 1-2 weeks. Business sites usually take 2-4 weeks depending on content and booking or shop setup. Custom apps are scoped per project.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Do you really do same-day fixes?</summary>
+            <p class="answer">Yes, for scoped issues like copy updates, broken links, form bugs, or layout glitches. Text me with details and I will confirm timing and which tier ($75 / $150 / $200) fits.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can I pay with Venmo?</summary>
+            <p class="answer">Yes. Venmo works well for fixes and smaller projects. For larger builds we can split payment by milestone.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Who owns the code when we are done?</summary>
+            <p class="answer">You do. I hand over the files, repo access, and hosting setup so you are never locked in.</p>
+          </details>
+          <details class="faq-item">
+            <summary>How many revisions are included?</summary>
+            <p class="answer">Each package includes two rounds of design revisions during the build. Extra rounds or post-launch changes can be billed as fixes or covered under the $100/mo maintenance plan.</p>
+          </details>
         </div>
+      </div>
     </section>
 
-    <!-- RESUME -->
-    <section id="resume">
-        <div class="wrap">
-            <h2 class="section-title">Resume</h2>
-            <a class="btn btn-primary" href="javascript:void(0)" onclick="printResume()">Download / print resume</a>
-            <div class="resume-box">
-                <div class="r-head">
-                    <div class="r-name">Alex Caro</div>
-                    <div class="r-contact">Tampa, Florida · (813) 919-4939 · alex06caro@gmail.com</div>
-                </div>
-
-                <h3>Summary</h3>
-                <ul>
-                    <li>Software Architect, Autopilot Engineer, and interdisciplinary tutor. Computer Science + AI student at the University of Florida. Tesla Autopilot Engineer.</li>
-                </ul>
-
-                <h3>Education</h3>
-                <ul>
-                    <li>University of Florida, Bachelor of Science in Computer Science, Artificial Intelligence Minor</li>
-                    <li>Braulio Alonso High School, International Baccalaureate Diploma, 2024 (Inaugural Class)</li>
-                </ul>
-
-                <h3>Teaching &amp; Tutoring Experience</h3>
-                <ul>
-                    <li>iCode, Programming Instructor — Taught programming to K-12 students</li>
-                    <li>Private Tutor — English, Political Science, Linguistics, Philosophy, Computer Science, Math, Economics, History, Public Speaking, and Writing</li>
-                    <li>Guest Lecturer — UF Coding Club, Data Structures and Algorithms</li>
-                </ul>
-
-                <h3>Professional Experience</h3>
-                <ul>
-                    <li>Tesla, Autopilot Engineer; AI Safety Operator Trainer</li>
-                    <li>Freelance Web Designer — Built 8+ websites for small businesses</li>
-                    <li>UF Active Learning Program, Research Assistant, AI Storytelling and Social Impact Media</li>
-                    <li>Mr. Putters, Freelance Software Developer (Commission)</li>
-                </ul>
-
-                <h3>Leadership and Activities</h3>
-                <ul>
-                    <li>AI^2, University of Florida, Committee Leader, Law and Privacy Committee</li>
-                    <li>Society of Hispanic Professional Engineers, Member</li>
-                    <li>Volunteer, Metropolitan Ministries; Humane Society Critter Camp</li>
-                </ul>
-
-                <div class="transcript-note">Official resume and transcripts available upon request.</div>
-            </div>
+    <!-- Contact -->
+    <section class="contact" id="contact">
+      <div class="container contact-inner">
+        <div>
+          <p class="section-label">Contact</p>
+          <h2>Let’s build something great.</h2>
+          <p class="contact-lead">
+            Tell me what you need. A new site, a redesign, or a same-day fix. I reply personally, usually the same day.
+          </p>
+          <div class="contact-actions">
+            <a class="btn btn-orange" href="tel:+18139194939">Call (813) 919-4939</a>
+            <a class="btn btn-secondary" style="border-color:rgba(255,255,255,0.25);color:#F8FAFC" href="mailto:alex06caro@gmail.com">Email Alex</a>
+          </div>
         </div>
+        <aside class="contact-card">
+          <h3>Reach me</h3>
+          <div class="contact-links">
+            <a href="tel:+18139194939">
+              <span class="label">Phone</span>
+              <span class="value">(813) 919-4939</span>
+            </a>
+            <a href="mailto:alex06caro@gmail.com">
+              <span class="label">Email</span>
+              <span class="value">alex06caro@gmail.com</span>
+            </a>
+            <a href="https://www.linkedin.com/in/alexander-caro-6083a7348" target="_blank" rel="noopener noreferrer">
+              <span class="label">LinkedIn</span>
+              <span class="value">alexander-caro</span>
+            </a>
+            <a href="https://alex-caro.github.io" target="_blank" rel="noopener noreferrer">
+              <span class="label">Portfolio</span>
+              <span class="value">alex-caro.github.io</span>
+            </a>
+          </div>
+        </aside>
+      </div>
     </section>
+  </main>
 
-    <!-- CONTACT -->
-    <section id="contact" class="alt">
-        <div class="wrap">
-            <h2 class="section-title">Connect With Me</h2>
-            <div class="contact-box">
-                <div>
-                    <h3>Alex Caro</h3>
-                    <p>Call, text, or email. I usually respond within a day.</p>
-                    <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;">
-                        <a href="https://www.linkedin.com/in/alexander-caro-6083a7348" target="_blank" style="color:rgba(255,255,255,0.7);font-weight:600;transition:color 0.2s;">LinkedIn</a>
-                    </div>
-                </div>
-                <div class="contact-links">
-                    <a href="tel:+18139194939">(813) 919-4939</a>
-                    <a href="mailto:alex06caro@gmail.com">alex06caro@gmail.com</a>
-                    <a href="https://calendly.com/alex06caro" target="_blank" style="background:var(--orange);border-color:var(--orange);">📅 Schedule a call</a>
-                </div>
-            </div>
-        </div>
-    </section>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p class="footer-brand">Alex Caro · Web Design</p>
+        <p class="footer-slogan">Local expertise. Personalized approach. Real impact.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+        <a href="https://www.linkedin.com/in/alexander-caro-6083a7348" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </nav>
+      <p>&copy; <span id="year">2026</span> Alex Caro. Tampa, FL.</p>
+    </div>
+  </footer>
 
-    <footer>
-        <div class="wrap">
-            <div class="foot-tagline">Alex Caro: The Software Architect</div>
-            <div class="foot-services">Think smarter. Write sharper. Debate better.</div>
-            <div style="font-size:12px;opacity:0.6;">English · Political Science · Linguistics · Philosophy · Computer Science · Math · Economics · History · Public Speaking · Writing · IB · Web Design · Tutoring</div>
-            <div style="margin-top:8px;">&copy; 2026 Alex Caro</div>
-        </div>
-    </footer>
-
-    <!-- BACK TO TOP BUTTON -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
-
-    <script>
-        document.getElementById('navToggle').addEventListener('click', function() {
-            document.getElementById('navLinks').classList.toggle('open');
-        });
-        document.querySelectorAll('nav.links a').forEach(function(a) {
-            a.addEventListener('click', function() {
-                document.getElementById('navLinks').classList.remove('open');
-            });
-        });
-
-        function printResume() {
-            document.body.classList.add('print-resume');
-            window.print();
-            setTimeout(function() {
-                document.body.classList.remove('print-resume');
-            }, 500);
-        }
-
-        const backToTopBtn = document.getElementById('backToTop');
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 300) {
-                backToTopBtn.classList.add('visible');
-            } else {
-                backToTopBtn.classList.remove('visible');
-            }
-        });
-        backToTopBtn.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
-
+  <script src="assets/script.js"></script>
 </body>
 </html>
