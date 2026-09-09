@@ -58,14 +58,8 @@ async function loadChapter(slug) {
 }
 
 function sampleFront(md) {
-  const split = md.split(/\n## Preface\n/);
-  if (split.length > 1) return split[0].trim();
-  const note = md.split(/\n## Author's Note\n/);
-  if (note.length > 1) {
-    const rest = note[1].split(/\n## /)[0];
-    return (`## Author's Note\n` + rest).trim();
-  }
-  return md.split(/\n{2,}/).slice(0, 6).join("\n\n");
+  // Free sample is the full front-matter chapter (Author's Note + Preface + Introduction).
+  return String(md || "").trim();
 }
 
 function venmoWeb() {
@@ -140,7 +134,7 @@ function cover() {
           )
           .join("")}
       </ol>
-      <p class="fine">Not a call to violence. A political critique. Sample is the Author's Note.</p>
+      <p class="fine">Not a call to violence. A political critique. Free sample includes Author's Note, Preface, and Introduction.</p>
     </section>`;
 }
 
@@ -188,12 +182,14 @@ async function readView(slug) {
   }
   let gated = false;
   if (!full) {
-    if (item.slug === "front") md = sampleFront(md);
-    else {
+    if (item.sample) {
+      md = sampleFront(md);
+      gated = true; // soft CTA after the free chapter
+    } else {
       const paras = md.split(/\n{2,}/).filter((p) => p.trim());
       md = paras.slice(0, 2).join("\n\n");
+      gated = true;
     }
-    gated = true;
   }
   const idx = B.toc.findIndex((t) => t.slug === item.slug);
   const prev = B.toc[idx - 1];
@@ -224,9 +220,15 @@ async function readView(slug) {
 }
 
 async function render() {
+  const main = document.getElementById("main");
+  if (!B || !Array.isArray(B.toc) || !B.toc.length) {
+    if (main) {
+      main.innerHTML = `<section class="pad narrow"><p class="fine">Book data failed to load. Hard-refresh this page.</p><a class="btn" href="./?v=20260910#/read/front">Retry free sample</a></section>`;
+    }
+    return;
+  }
   const r = route();
   document.getElementById("nav").innerHTML = nav(r.page);
-  const main = document.getElementById("main");
   if (r.page === "buy") main.innerHTML = buy();
   else if (r.page === "read") main.innerHTML = await readView(r.slug);
   else main.innerHTML = cover();
