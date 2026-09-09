@@ -1,5 +1,5 @@
-const UNLOCK_KEY = "king.unlock.v1";
-const B = window.KING_META;
+const UNLOCK_KEY = "caro.unlock.v1";
+const B = window.BOOK_META;
 const cache = {};
 
 function unlocked() {
@@ -20,10 +20,10 @@ function unlock() {
 
 function esc(s) {
   return String(s)
-    .replace(/&/g, "&")
-    .replace(/</g, "<")
-    .replace(/>/g, ">")
-    .replace(/"/g, """);
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function mdToHtml(md) {
@@ -51,13 +51,21 @@ function mdToHtml(md) {
 async function loadChapter(slug) {
   if (cache[slug]) return cache[slug];
   const r = await fetch(`./book/${slug}.md`);
+  if (!r.ok) throw new Error(`Could not load sample chapter (${slug})`);
   const t = await r.text();
   cache[slug] = t;
   return t;
 }
 
 function sampleFront(md) {
-  return md.split(/\n## Preface\n/)[0].trim();
+  const split = md.split(/\n## Preface\n/);
+  if (split.length > 1) return split[0].trim();
+  const note = md.split(/\n## Author's Note\n/);
+  if (note.length > 1) {
+    const rest = note[1].split(/\n## /)[0];
+    return (`## Author's Note\n` + rest).trim();
+  }
+  return md.split(/\n{2,}/).slice(0, 6).join("\n\n");
 }
 
 function venmoWeb() {
@@ -114,19 +122,21 @@ function cover() {
           <p class="blurb">${esc(B.blurb)}</p>
           <blockquote class="epi">${esc(B.epigraph)}<cite>${esc(B.epigraphBy)}</cite></blockquote>
           <div class="row">
-            <a class="btn" href="#/buy">${esc(B.cta)} · $${esc(B.price)}</a>
+            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a>
             <a class="btn ghost" href="#/read/front">Free sample</a>
           </div>
         </div>
       </div>
     </section>
     <section class="pad">
-      <h2>Contents</h2>
+      <h2>Inside the sample</h2>
       <ol class="toc">
         ${B.toc
           .map(
-            (t, i) =>
-              `<li><a href="#/read/${t.slug}"><span>${String(i).padStart(2, "0")}</span> ${esc(t.title)}</a>${t.sample ? "<em>Sample</em>" : ""}</li>`,
+            (t) =>
+              `<li><a href="#/read/${t.slug}">${esc(t.title)}</a>${
+                t.sample ? '<span class="chip">Free</span>' : ""
+              }</li>`,
           )
           .join("")}
       </ol>
@@ -140,19 +150,20 @@ function buy() {
       <p class="kicker">Digital edition · $${esc(B.price)}</p>
       <h1>${esc(B.cta)}</h1>
       <ol class="steps">
-        <li><b>1</b><span>Pay $${esc(B.price)} to Venmo @${esc(B.venmo)}. The link fills amount and note.</span></li>
-        <li><b>2</b><span>Note must read ${esc(B.note)} so the copy can be found.</span></li>
-        <li><b>3</b><span>Come back here. Tap I paid. Unlock this device. Full book is in Read.</span></li>
+        <li><b>1</b><span>Buy on Payhip for $${esc(B.price)}. Instant download.</span></li>
+        <li><b>2</b><span>Or pay Venmo @${esc(B.venmo)} with note ${esc(B.note)}, then unlock below.</span></li>
+        <li><b>3</b><span>After Venmo, tap I paid to unlock the full book on this device.</span></li>
       </ol>
       <div class="card buycard">
         <img src="${coverImg()}" alt="">
         <div>
           <p class="author">${esc(B.author)}</p>
           <p>${esc(B.title)}</p>
-          <p class="mono">Venmo @${esc(B.venmo)} · $${esc(B.price)} · ${esc(B.note)}</p>
+          <p class="mono">$${esc(B.price)} · Payhip or Venmo @${esc(B.venmo)}</p>
           <div class="row">
-            <a class="btn" href="${venmoApp()}">Pay in Venmo app</a>
-            <a class="btn ghost" href="${venmoWeb()}" target="_blank" rel="noreferrer">Pay in browser</a>
+            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">Buy on Payhip</a>
+            <a class="btn ghost" href="${venmoApp()}">Pay in Venmo app</a>
+            <a class="btn ghost" href="${venmoWeb()}" target="_blank" rel="noreferrer">Venmo in browser</a>
             <button class="btn ghost" type="button" id="copy-note">Copy note</button>
           </div>
         </div>
@@ -169,7 +180,12 @@ function buy() {
 async function readView(slug) {
   const item = B.toc.find((t) => t.slug === slug) || B.toc[0];
   const full = unlocked();
-  let md = await loadChapter(item.slug);
+  let md;
+  try {
+    md = await loadChapter(item.slug);
+  } catch (err) {
+    return `<section class="pad narrow"><p class="fine">Sample failed to load. Refresh and try again.</p><a class="btn" href="#/read/front">Retry free sample</a></section>`;
+  }
   let gated = false;
   if (!full) {
     if (item.slug === "front") md = sampleFront(md);
@@ -196,7 +212,7 @@ async function readView(slug) {
         ${mdToHtml(md)}
         ${
           gated
-            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Venmo.</p><a class="btn" href="#/buy">${esc(B.cta)} · $${esc(B.price)}</a></div>`
+            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a></div>`
             : ""
         }
         <nav class="turn">
@@ -229,12 +245,13 @@ async function render() {
         await navigator.clipboard.writeText(B.note);
         copy.textContent = "Copied";
       } catch {
-        copy.textContent = B.note;
+        copy.textContent = "Copy failed";
       }
     };
   }
-  window.scrollTo(0, 0);
 }
 
-window.addEventListener("hashchange", render);
-render();
+window.addEventListener("hashchange", () => {
+  render().catch(console.error);
+});
+render().catch(console.error);

@@ -2,7 +2,7 @@
 
 ## An Anarcho-Syndicalist Manifesto
 
-Julian King
+Alexander Caro
 
 2026
 
