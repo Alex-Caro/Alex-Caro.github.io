@@ -1,15 +1,9 @@
-# Alex Caro Web Design
+# alex-caro.github.io
 
-Freelance web design for Tampa Bay small businesses.
+Alexander Caro — Tampa web design + author site.
 
-**Live:** https://alex-caro.github.io
+- Site: https://alex-caro.github.io/
+- One manifesto only: https://alex-caro.github.io/abolishment/ (free sample + Payhip)
+- Digital book: $12.99 · https://payhip.com/b/IoHdW
 
-## Contact
-
-- Phone: (813) 919-4939
-- Email: alex06caro@gmail.com
-- LinkedIn: https://www.linkedin.com/in/alexander-caro-6083a7348
-
-## Tagline
-
-Clean Code. Sharp Design. Built to Last.
+Do not mirror the manifesto on a second GitHub Pages project.
