@@ -61,5 +61,5 @@ I have not offered a foreign policy because a public without those Tuesday insti
 The ruins will wait. They always have. They are patient in a way institutions of extraction are not, because the ruins do not need a quarterly return. What a living population needs is not a better speech about eternity. It is a set of institutions that can still tell a face from a jersey when the speech is over. That is the whole book. The rest was evidence.
 
 
-Julian King
+Alexander Caro
 June 2026
