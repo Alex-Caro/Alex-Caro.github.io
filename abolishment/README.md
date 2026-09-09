@@ -1,11 +1,7 @@
 # Arguments for An Abolishment of Corporate-Owned America
 
-Julian King. Digital store.
+Alexander Caro. Free sample + digital storefront for GitHub Pages.
 
-**Live:** https://alex-caro.github.io/abolishment/
+Live: https://alex-caro.github.io/abolishment/
 
-$19.99. Venmo @Alexander-Caro-31. Note `JULIAN KING BOOK`.
-
-Get your copy of a revolution.
-
-Not a call to violence. A political critique. Sample is the Author's Note.
+Digital $12.99 · Payhip https://payhip.com/b/IoHdW · Venmo @Alexander-Caro-31 · note `ALEXANDER CARO BOOK`
