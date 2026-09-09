@@ -20,10 +20,10 @@ function unlock() {
 
 function esc(s) {
   return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g, "&")
+    .replace(/</g, "<")
+    .replace(/>/g, ">")
+    .replace(/"/g, """);
 }
 
 function mdToHtml(md) {
@@ -70,10 +70,10 @@ function venmoApp() {
 }
 
 function coverImg() {
-  return window.KING_COVER || "./cover.jpg";
+  return "./cover.jpg";
 }
 function wideImg() {
-  return window.KING_WIDE || "./cover-wide.jpg";
+  return "./cover-wide.jpg";
 }
 
 function route() {
@@ -130,7 +130,7 @@ function cover() {
           )
           .join("")}
       </ol>
-      <p class="fine">Not a call to violence. A political critique.</p>
+      <p class="fine">Not a call to violence. A political critique. Sample is the Author's Note.</p>
     </section>`;
 }
 
@@ -139,16 +139,21 @@ function buy() {
     <section class="pad narrow">
       <p class="kicker">Digital edition · $${esc(B.price)}</p>
       <h1>${esc(B.cta)}</h1>
-      <p class="blurb">Two taps. Pay $${esc(B.price)} on Venmo @${esc(B.venmo)}. Note ${esc(B.note)} is filled. Then unlock this device.</p>
+      <ol class="steps">
+        <li><b>1</b><span>Pay $${esc(B.price)} to Venmo @${esc(B.venmo)}. The link fills amount and note.</span></li>
+        <li><b>2</b><span>Note must read ${esc(B.note)} so the copy can be found.</span></li>
+        <li><b>3</b><span>Come back here. Tap I paid. Unlock this device. Full book is in Read.</span></li>
+      </ol>
       <div class="card buycard">
         <img src="${coverImg()}" alt="">
         <div>
           <p class="author">${esc(B.author)}</p>
           <p>${esc(B.title)}</p>
-          <p class="mono">Venmo @${esc(B.venmo)} · $${esc(B.price)} · note: ${esc(B.note)}</p>
+          <p class="mono">Venmo @${esc(B.venmo)} · $${esc(B.price)} · ${esc(B.note)}</p>
           <div class="row">
             <a class="btn" href="${venmoApp()}">Pay in Venmo app</a>
             <a class="btn ghost" href="${venmoWeb()}" target="_blank" rel="noreferrer">Pay in browser</a>
+            <button class="btn ghost" type="button" id="copy-note">Copy note</button>
           </div>
         </div>
       </div>
@@ -157,6 +162,7 @@ function buy() {
           ? `<p class="ok">This device is unlocked.</p><a class="btn" href="#/read/front">Open the book</a>`
           : `<button class="btn wide" id="unlock">I paid · unlock the book</button>`
       }
+      <p class="fine">Not a call to violence. A political critique.</p>
     </section>`;
 }
 
@@ -214,6 +220,17 @@ async function render() {
       unlock();
       location.hash = "#/read/front";
       render();
+    };
+  }
+  const copy = document.getElementById("copy-note");
+  if (copy) {
+    copy.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(B.note);
+        copy.textContent = "Copied";
+      } catch {
+        copy.textContent = B.note;
+      }
     };
   }
   window.scrollTo(0, 0);
