@@ -121,7 +121,7 @@ function cover() {
           )
           .join("")}
       </ol>
-      <p class="fine">Not a call to violence. A political critique. Sample is the Author's Note.</p>
+      <p class="fine">Sample is the Author's Note.</p>
     </section>`;
 }
 
@@ -166,7 +166,7 @@ function buy() {
           ? `<p class="ok">This device is unlocked.</p><a class="btn" href="#/read/front">Open the book</a>`
           : `<button class="btn wide" id="unlock">I paid · unlock on this device</button>`
       }
-      <p class="fine">Not a call to violence. A political critique.</p>
+      <p class="fine">Digital edition. Instant download on Payhip.</p>
     </section>`;
 }
 

@@ -5,7 +5,7 @@ window.KING_META = {
   year: 2026,
   cta: "Get your copy of a revolution",
   blurb:
-    "Alexander Caro. UF computer science. Tampa Bay. A peaceful critique of the 250-year American empire, late-state capitalism, and the precipice of WWIII. Not a call to violence. Digital edition $12.99. Instant download.",
+    "Alexander Caro. UF computer science. Tampa Bay. Digital edition $12.99. Instant download.",
   epigraph: "The Earth is littered with the ruins of empires that once believed they were eternal.",
   epigraphBy: "Camille Paglia",
   price: "12.99",
