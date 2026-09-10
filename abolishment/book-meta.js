@@ -5,10 +5,10 @@ window.KING_META = {
   year: 2026,
   cta: "Get your copy of a revolution",
   blurb:
-    "Alexander Caro. UF computer science. Tampa Bay. Digital edition $12.99. Instant download.",
+    "Alexander Caro. UF computer science. Tampa Bay. Digital edition $14.99. Instant download.",
   epigraph: "The Earth is littered with the ruins of empires that once believed they were eternal.",
   epigraphBy: "Camille Paglia",
-  price: "12.99",
+  price: "14.99",
   venmo: "Alexander-Caro-31",
   note: "ALEXANDER CARO BOOK",
   payhip: "https://payhip.com/buy?link=IoHdW",
