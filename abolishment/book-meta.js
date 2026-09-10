@@ -1,17 +1,18 @@
-window.BOOK_META = {
+window.KING_META = {
   title: "Arguments for An Abolishment of Corporate-Owned America",
   subtitle: "An Anarcho-Syndicalist Manifesto",
-  author: "Alexander Caro",
+  author: "Julian King",
   year: 2026,
-  cta: "Get your copy",
+  cta: "Get your copy of a revolution",
   blurb:
-    "A peaceful critique of the 250-year American empire, late-state capitalism, and the precipice of WWIII. Not a call to violence. Digital edition $12.99.",
+    "A peaceful critique of the 250-year American empire, late-state capitalism, and the precipice of WWIII. Not a call to violence. Digital edition $12.99. Instant download.",
   epigraph: "The Earth is littered with the ruins of empires that once believed they were eternal.",
   epigraphBy: "Camille Paglia",
   price: "12.99",
-  payhip: "https://payhip.com/b/IoHdW",
   venmo: "Alexander-Caro-31",
-  note: "ALEXANDER CARO BOOK",
+  note: "JULIAN KING BOOK",
+  payhip: "https://payhip.com/buy?link=IoHdW",
+  payhipPage: "https://payhip.com/b/IoHdW",
   toc: [
     { slug: "front", title: "Author's Note, Preface, Introduction", sample: true },
     { slug: "ch1", title: "250-Year Empire Theory", sample: false },

@@ -1,5 +1,5 @@
-const UNLOCK_KEY = "caro.unlock.v1";
-const B = window.BOOK_META;
+const UNLOCK_KEY = "king.unlock.v1";
+const B = window.KING_META;
 const cache = {};
 
 function unlocked() {
@@ -51,24 +51,13 @@ function mdToHtml(md) {
 async function loadChapter(slug) {
   if (cache[slug]) return cache[slug];
   const r = await fetch(`./book/${slug}.md`);
-  if (!r.ok) throw new Error(`Could not load sample chapter (${slug})`);
   const t = await r.text();
   cache[slug] = t;
   return t;
 }
 
 function sampleFront(md) {
-  // Free sample is the full front-matter chapter (Author's Note + Preface + Introduction).
-  return String(md || "").trim();
-}
-
-function venmoWeb() {
-  const note = encodeURIComponent(B.note);
-  return `https://account.venmo.com/pay?audience=private&amount=${B.price}&note=${note}&recipients=${encodeURIComponent(B.venmo)}`;
-}
-
-function venmoApp() {
-  return `venmo://paycharge?txn=pay&recipients=${encodeURIComponent(B.venmo)}&amount=${B.price}&note=${encodeURIComponent(B.note)}`;
+  return md.split(/\n## Preface\n/)[0].trim();
 }
 
 function coverImg() {
@@ -116,26 +105,33 @@ function cover() {
           <p class="blurb">${esc(B.blurb)}</p>
           <blockquote class="epi">${esc(B.epigraph)}<cite>${esc(B.epigraphBy)}</cite></blockquote>
           <div class="row">
-            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a>
+            <a class="btn" href="#/buy">${esc(B.cta)} · $${esc(B.price)}</a>
             <a class="btn ghost" href="#/read/front">Free sample</a>
           </div>
         </div>
       </div>
     </section>
     <section class="pad">
-      <h2>Inside the sample</h2>
+      <h2>Contents</h2>
       <ol class="toc">
         ${B.toc
           .map(
-            (t) =>
-              `<li><a href="#/read/${t.slug}">${esc(t.title)}</a>${
-                t.sample ? '<span class="chip">Free</span>' : ""
-              }</li>`,
+            (t, i) =>
+              `<li><a href="#/read/${t.slug}"><span>${String(i).padStart(2, "0")}</span> ${esc(t.title)}</a>${t.sample ? "<em>Sample</em>" : ""}</li>`,
           )
           .join("")}
       </ol>
-      <p class="fine">Not a call to violence. A political critique. Free sample includes Author's Note, Preface, and Introduction.</p>
+      <p class="fine">Not a call to violence. A political critique. Sample is the Author's Note.</p>
     </section>`;
+}
+
+function venmoWeb() {
+  const note = encodeURIComponent(B.note);
+  return `https://account.venmo.com/pay?audience=private&amount=${B.price}&note=${note}&recipients=${encodeURIComponent(B.venmo)}`;
+}
+
+function venmoApp() {
+  return `venmo://paycharge?txn=pay&recipients=${encodeURIComponent(B.venmo)}&amount=${B.price}&note=${encodeURIComponent(B.note)}`;
 }
 
 function buy() {
@@ -144,20 +140,23 @@ function buy() {
       <p class="kicker">Digital edition · $${esc(B.price)}</p>
       <h1>${esc(B.cta)}</h1>
       <ol class="steps">
-        <li><b>1</b><span>Buy on Payhip for $${esc(B.price)}. Instant download.</span></li>
-        <li><b>2</b><span>Or pay Venmo @${esc(B.venmo)} with note ${esc(B.note)}, then unlock below.</span></li>
-        <li><b>3</b><span>After Venmo, tap I paid to unlock the full book on this device.</span></li>
+        <li><b>1</b><span>Pay $${esc(B.price)} on Payhip. Card or PayPal. The file downloads to you.</span></li>
+        <li><b>2</b><span>Want to read it here too? Come back and tap I paid. Unlock this device.</span></li>
+        <li><b>3</b><span>Venmo still works: @${esc(B.venmo)}, note ${esc(B.note)}.</span></li>
       </ol>
       <div class="card buycard">
         <img src="${coverImg()}" alt="">
         <div>
           <p class="author">${esc(B.author)}</p>
           <p>${esc(B.title)}</p>
-          <p class="mono">$${esc(B.price)} · Payhip or Venmo @${esc(B.venmo)}</p>
+          <p class="mono">Payhip · $${esc(B.price)} · instant download</p>
           <div class="row">
-            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">Buy on Payhip</a>
-            <a class="btn ghost" href="${venmoApp()}">Pay in Venmo app</a>
-            <a class="btn ghost" href="${venmoWeb()}" target="_blank" rel="noreferrer">Venmo in browser</a>
+            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">Buy on Payhip · $${esc(B.price)}</a>
+            <a class="btn ghost" href="${esc(B.payhipPage)}" target="_blank" rel="noreferrer">Product page</a>
+          </div>
+          <div class="row">
+            <a class="btn ghost" href="${venmoApp()}">Venmo app</a>
+            <a class="btn ghost" href="${venmoWeb()}" target="_blank" rel="noreferrer">Venmo browser</a>
             <button class="btn ghost" type="button" id="copy-note">Copy note</button>
           </div>
         </div>
@@ -165,7 +164,7 @@ function buy() {
       ${
         unlocked()
           ? `<p class="ok">This device is unlocked.</p><a class="btn" href="#/read/front">Open the book</a>`
-          : `<button class="btn wide" id="unlock">I paid · unlock the book</button>`
+          : `<button class="btn wide" id="unlock">I paid · unlock on this device</button>`
       }
       <p class="fine">Not a call to violence. A political critique.</p>
     </section>`;
@@ -174,22 +173,15 @@ function buy() {
 async function readView(slug) {
   const item = B.toc.find((t) => t.slug === slug) || B.toc[0];
   const full = unlocked();
-  let md;
-  try {
-    md = await loadChapter(item.slug);
-  } catch (err) {
-    return `<section class="pad narrow"><p class="fine">Sample failed to load. Refresh and try again.</p><a class="btn" href="#/read/front">Retry free sample</a></section>`;
-  }
+  let md = await loadChapter(item.slug);
   let gated = false;
   if (!full) {
-    if (item.sample) {
-      md = sampleFront(md);
-      gated = true; // soft CTA after the free chapter
-    } else {
+    if (item.slug === "front") md = sampleFront(md);
+    else {
       const paras = md.split(/\n{2,}/).filter((p) => p.trim());
       md = paras.slice(0, 2).join("\n\n");
-      gated = true;
     }
+    gated = true;
   }
   const idx = B.toc.findIndex((t) => t.slug === item.slug);
   const prev = B.toc[idx - 1];
@@ -208,7 +200,7 @@ async function readView(slug) {
         ${mdToHtml(md)}
         ${
           gated
-            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a></div>`
+            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip. Instant download.</p><a class="btn" href="#/buy">${esc(B.cta)} · $${esc(B.price)}</a></div>`
             : ""
         }
         <nav class="turn">
@@ -220,15 +212,9 @@ async function readView(slug) {
 }
 
 async function render() {
-  const main = document.getElementById("main");
-  if (!B || !Array.isArray(B.toc) || !B.toc.length) {
-    if (main) {
-      main.innerHTML = `<section class="pad narrow"><p class="fine">Book data failed to load. Hard-refresh this page.</p><a class="btn" href="./?v=20260910#/read/front">Retry free sample</a></section>`;
-    }
-    return;
-  }
   const r = route();
   document.getElementById("nav").innerHTML = nav(r.page);
+  const main = document.getElementById("main");
   if (r.page === "buy") main.innerHTML = buy();
   else if (r.page === "read") main.innerHTML = await readView(r.slug);
   else main.innerHTML = cover();
@@ -247,13 +233,12 @@ async function render() {
         await navigator.clipboard.writeText(B.note);
         copy.textContent = "Copied";
       } catch {
-        copy.textContent = "Copy failed";
+        copy.textContent = B.note;
       }
     };
   }
+  window.scrollTo(0, 0);
 }
 
-window.addEventListener("hashchange", () => {
-  render().catch(console.error);
-});
-render().catch(console.error);
+window.addEventListener("hashchange", render);
+render();
