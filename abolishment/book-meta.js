@@ -1,4 +1,4 @@
-window.KING_META = {
+window.BOOK_META = {
   title: "Arguments for An Abolishment of Corporate-Owned America",
   subtitle: "An Anarcho-Syndicalist Manifesto",
   author: "Alexander Caro",

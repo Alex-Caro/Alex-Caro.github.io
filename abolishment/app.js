@@ -1,5 +1,5 @@
 const UNLOCK_KEY = "king.unlock.v1";
-const B = window.KING_META;
+const B = window.BOOK_META;
 const cache = {};
 
 function unlocked() {
