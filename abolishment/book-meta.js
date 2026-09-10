@@ -10,7 +10,7 @@ window.KING_META = {
   epigraphBy: "Camille Paglia",
   price: "12.99",
   venmo: "Alexander-Caro-31",
-  note: "JULIAN KING BOOK",
+  note: "ALEXANDER CARO BOOK",
   payhip: "https://payhip.com/buy?link=IoHdW",
   payhipPage: "https://payhip.com/b/IoHdW",
   toc: [
