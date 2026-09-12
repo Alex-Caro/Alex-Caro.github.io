@@ -20,10 +20,10 @@ function unlock() {
 
 function esc(s) {
   return String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g, "&")
+    .replace(/</g, "<")
+    .replace(/>/g, ">")
+    .replace(/"/g, """);
 }
 
 function mdToHtml(md) {
@@ -79,8 +79,8 @@ function route() {
 
 function nav(active) {
   const items = [
-    ["#/", "Cover", active === "cover"],
-    ["#/read/front", "Read", active === "read"],
+    ["#/", "Book", active === "cover"],
+    ["#/read/front", "Sample", active === "read"],
     ["#/buy", "Buy", active === "buy"],
   ];
   return items
@@ -91,25 +91,45 @@ function nav(active) {
     .join("");
 }
 
+function buyButtons() {
+  return `
+    <div class="row">
+      <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a>
+      <a class="btn ghost" href="#/read/front">Free sample</a>
+    </div>`;
+}
+
 function cover() {
   return `
     <section class="hero">
       <img class="bleed" src="${wideImg()}" alt="">
       <div class="veil"></div>
       <div class="hero-grid">
-        <img class="jacket" src="${coverImg()}" alt="Jacket. A United States flag before the White House at night.">
+        <img class="jacket" src="${coverImg()}" alt="Book cover. A United States flag before the White House at night.">
         <div>
           <p class="kicker">${esc(B.subtitle)} · $${esc(B.price)}</p>
+          <p class="headline">${esc(B.headline)}</p>
           <h1>${esc(B.title)}</h1>
           <p class="author">${esc(B.author)}</p>
           <p class="blurb">${esc(B.blurb)}</p>
           <blockquote class="epi">${esc(B.epigraph)}<cite>${esc(B.epigraphBy)}</cite></blockquote>
-          <div class="row">
-            <a class="btn" href="#/buy">${esc(B.cta)} · $${esc(B.price)}</a>
-            <a class="btn ghost" href="#/read/front">Free sample</a>
-          </div>
+          ${buyButtons()}
         </div>
       </div>
+    </section>
+    <section class="pad split">
+      <div>
+        <h2>Who it is for</h2>
+        <p class="blurb">${esc(B.who)}</p>
+      </div>
+      <div>
+        <h2>What you get</h2>
+        <p class="blurb">${esc(B.what)}</p>
+        <p class="fine">${esc(B.stance)} Instant download on Payhip.</p>
+      </div>
+    </section>
+    <section class="pad buy-strip">
+      ${buyButtons()}
     </section>
     <section class="pad">
       <h2>Contents</h2>
@@ -121,7 +141,8 @@ function cover() {
           )
           .join("")}
       </ol>
-      <p class="fine">Sample is the Author's Note.</p>
+      <p class="fine">Sample is the Author's Note and the opening of Chapter 1. The rest unlocks after payment.</p>
+      ${buyButtons()}
     </section>`;
 }
 
@@ -166,7 +187,7 @@ function buy() {
           ? `<p class="ok">This device is unlocked.</p><a class="btn" href="#/read/front">Open the book</a>`
           : `<button class="btn wide" id="unlock">I paid · unlock on this device</button>`
       }
-      <p class="fine">Digital edition. Instant download on Payhip.</p>
+      <p class="fine">Digital edition. Instant download on Payhip. ${esc(B.stance)}</p>
     </section>`;
 }
 
@@ -176,8 +197,20 @@ async function readView(slug) {
   let md = await loadChapter(item.slug);
   let gated = false;
   if (!full) {
-    if (item.slug === "front") md = sampleFront(md);
-    else {
+    if (item.slug === "front") {
+      md = sampleFront(md);
+      try {
+        const ch1 = await loadChapter("ch1");
+        const paras = ch1
+          .split(/\n{2,}/)
+          .filter((p) => p.trim())
+          .slice(0, 3)
+          .join("\n\n");
+        md = `${md}\n\n## From Chapter 1\n\n${paras}`;
+      } catch {
+        /* missing chapter file */
+      }
+    } else {
       const paras = md.split(/\n{2,}/).filter((p) => p.trim());
       md = paras.slice(0, 2).join("\n\n");
     }
@@ -200,7 +233,7 @@ async function readView(slug) {
         ${mdToHtml(md)}
         ${
           gated
-            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip. Instant download.</p><a class="btn" href="#/buy">${esc(B.cta)} · $${esc(B.price)}</a></div>`
+            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip. Instant download.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a></div>`
             : ""
         }
         <nav class="turn">
