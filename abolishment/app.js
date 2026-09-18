@@ -50,7 +50,13 @@ function mdToHtml(md) {
 
 async function loadChapter(slug) {
   if (cache[slug]) return cache[slug];
-  const r = await fetch(`./book/${slug}.md`);
+  let r;
+  try {
+    r = await fetch(`./book/${encodeURIComponent(slug)}.md`, { credentials: "same-origin" });
+  } catch (err) {
+    throw new Error("network");
+  }
+  if (!r.ok) throw new Error("missing");
   const t = await r.text();
   cache[slug] = t;
   return t;
@@ -94,7 +100,7 @@ function nav(active) {
 function buyButtons() {
   return `
     <div class="row">
-      <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a>
+      <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">${esc(B.cta)} · $${esc(B.price)}</a>
       <a class="btn ghost" href="#/read/front">Free sample</a>
     </div>`;
 }
@@ -172,12 +178,12 @@ function buy() {
           <p>${esc(B.title)}</p>
           <p class="mono">Payhip · $${esc(B.price)} · instant download</p>
           <div class="row">
-            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">Buy on Payhip · $${esc(B.price)}</a>
-            <a class="btn ghost" href="${esc(B.payhipPage)}" target="_blank" rel="noreferrer">Product page</a>
+            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">Buy on Payhip · $${esc(B.price)}</a>
+            <a class="btn ghost" href="${esc(B.payhipPage)}" target="_blank" rel="noopener noreferrer">Product page</a>
           </div>
           <div class="row">
             <a class="btn ghost" href="${venmoApp()}">Venmo app</a>
-            <a class="btn ghost" href="${venmoWeb()}" target="_blank" rel="noreferrer">Venmo browser</a>
+            <a class="btn ghost" href="${venmoWeb()}" target="_blank" rel="noopener noreferrer">Venmo browser</a>
             <button class="btn ghost" type="button" id="copy-note">Copy note</button>
           </div>
         </div>
@@ -194,7 +200,12 @@ function buy() {
 async function readView(slug) {
   const item = B.toc.find((t) => t.slug === slug) || B.toc[0];
   const full = unlocked();
-  let md = await loadChapter(item.slug);
+  let md;
+  try {
+    md = await loadChapter(item.slug);
+  } catch {
+    return `<section class="pad narrow"><h1>Chapter unavailable</h1><p class="blurb">That file could not be loaded.</p><a class="btn ghost" href="#/">Back</a></section>`;
+  }
   let gated = false;
   if (!full) {
     if (item.slug === "front") {
@@ -233,7 +244,7 @@ async function readView(slug) {
         ${mdToHtml(md)}
         ${
           gated
-            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip. Instant download.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noreferrer">${esc(B.cta)} · $${esc(B.price)}</a></div>`
+            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip. Instant download.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">${esc(B.cta)} · $${esc(B.price)}</a></div>`
             : ""
         }
         <nav class="turn">
@@ -245,18 +256,30 @@ async function readView(slug) {
 }
 
 async function render() {
-  const r = route();
-  document.getElementById("nav").innerHTML = nav(r.page);
+  const navEl = document.getElementById("nav");
   const main = document.getElementById("main");
-  if (r.page === "buy") main.innerHTML = buy();
-  else if (r.page === "read") main.innerHTML = await readView(r.slug);
-  else main.innerHTML = cover();
+  if (!navEl || !main) return;
+  try {
+    const r = route();
+    navEl.innerHTML = nav(r.page);
+    if (r.page === "buy") main.innerHTML = buy();
+    else if (r.page === "read") main.innerHTML = await readView(r.slug);
+    else main.innerHTML = cover();
+  } catch {
+    main.innerHTML =
+      '<section class="pad narrow"><h1>Could not load this page</h1><p class="blurb">Try again, or open Buy for the download.</p><a class="btn" href="#/buy">Buy</a> <a class="btn ghost" href="#/">Home</a></section>';
+    return;
+  }
   const u = document.getElementById("unlock");
   if (u) {
     u.onclick = () => {
-      unlock();
-      location.hash = "#/read/front";
-      render();
+      try {
+        unlock();
+        location.hash = "#/read/front";
+        render().catch(() => {});
+      } catch {
+        /* ignore */
+      }
     };
   }
   const copy = document.getElementById("copy-note");
@@ -270,8 +293,24 @@ async function render() {
       }
     };
   }
-  window.scrollTo(0, 0);
+  try {
+    window.scrollTo(0, 0);
+  } catch {
+    /* ignore */
+  }
 }
 
-window.addEventListener("hashchange", render);
-render();
+window.addEventListener("hashchange", () => {
+  render().catch(() => {});
+});
+window.addEventListener("unhandledrejection", (ev) => {
+  try {
+    ev.preventDefault();
+  } catch {
+    /* ignore */
+  }
+});
+window.addEventListener("error", () => {
+  /* fail soft; no stack dump in UI */
+});
+render().catch(() => {});
