@@ -1,2 +1,6 @@
-Alexander Caro. Eight books. $19.99.
-https://alex-caro.github.io/
+Alexander Caro.
+Nine books.
+$19.99.
+Live: https://alex-caro.github.io/
+Sample: https://alex-caro.github.io/abolishment/
+Shop: https://payhip.com/AlexCaroBooks
