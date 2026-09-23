@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Google Business Profile Cleanup | Alex Caro</title>
+  <meta name="description" content="Clean up your Google Business Profile so local customers in Tampa and Gainesville can find the right hours, photos, and info. From $149." />
+  <meta name="author" content="Alex Caro" />
+  <meta name="theme-color" content="#0B1220" />
+  <link rel="canonical" href="https://alex-caro.github.io/gbp-cleanup.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Google Business Profile Cleanup | Alex Caro" />
+  <meta property="og:description" content="A clear, fixed-price cleanup for local shop listings. Tampa and Gainesville. From $149." />
+  <meta property="og:url" content="https://alex-caro.github.io/gbp-cleanup.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Alex Caro" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Google Business Profile Cleanup | Alex Caro" />
+  <meta name="twitter:description" content="A clear, fixed-price cleanup for local shop listings. From $149." />
+
+  <style>
+    :root {
+      --bg: #0B1220;
+      --bg-elevated: #121A2B;
+      --bg-card: #162033;
+      --border: rgba(232, 238, 247, 0.10);
+      --text: #E8EEF7;
+      --muted: #A8B3C7;
+      --accent: #7DD3FC;
+      --accent-strong: #38BDF8;
+      --warm: #F5C16C;
+      --ok: #6EE7B7;
+      --focus: #FBBF24;
+      --radius: 14px;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --max: 720px;
+      --wide: 960px;
+      --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      --display: Georgia, "Times New Roman", Times, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 1.05rem;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+    a:hover { color: var(--accent-strong); }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--warm);
+      color: #111;
+      padding: 0.6rem 1rem;
+      z-index: 100;
+      font-weight: 700;
+    }
+    .skip-link:focus { left: 0.75rem; top: 0.75rem; }
+
+    .wrap {
+      width: min(100% - 2rem, var(--wide));
+      margin-inline: auto;
+    }
+    .narrow { width: min(100% - 2rem, var(--max)); margin-inline: auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+      background: rgba(11, 18, 32, 0.88);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      width: min(100% - 2rem, var(--wide));
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 0;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+    .logo-mark {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #1E3A5F, #0EA5E9);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+    .logo em { font-style: normal; color: var(--muted); font-weight: 500; }
+    .header-actions { display: flex; gap: 0.55rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      border-radius: 999px;
+      padding: 0.78rem 1.15rem;
+      font-weight: 650;
+      text-decoration: none;
+      border: 1px solid transparent;
+      line-height: 1.2;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--accent-strong);
+      color: #042033;
+    }
+    .btn-primary:hover { background: #7DD3FC; color: #042033; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover { border-color: rgba(125, 211, 252, 0.45); color: var(--accent); }
+    .btn-warm {
+      background: var(--warm);
+      color: #1A1205;
+    }
+    .btn-warm:hover { background: #F8D48A; color: #1A1205; }
+    .btn-lg { padding: 0.95rem 1.35rem; font-size: 1.05rem; }
+
+    .hero {
+      padding: 2.75rem 0 2.25rem;
+      background:
+        radial-gradient(900px 420px at 85% -10%, rgba(56, 189, 248, 0.18), transparent 60%),
+        radial-gradient(700px 380px at 0% 20%, rgba(245, 193, 108, 0.08), transparent 55%),
+        var(--bg);
+    }
+    .hero-grid {
+      display: grid;
+      gap: 1.75rem;
+    }
+    @media (min-width: 840px) {
+      .hero-grid {
+        grid-template-columns: 1.35fr 0.9fr;
+        align-items: center;
+        gap: 2.5rem;
+      }
+    }
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 0.85rem;
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(125, 211, 252, 0.28);
+      background: rgba(125, 211, 252, 0.08);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+    }
+    h1 {
+      margin: 0 0 1rem;
+      font-family: var(--display);
+      font-size: clamp(2rem, 5vw, 2.85rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      font-weight: 650;
+    }
+    .lead {
+      margin: 0 0 1.35rem;
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 38rem;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-bottom: 1.35rem; }
+    .hero-note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      max-width: 36rem;
+    }
+
+    .price-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: var(--shadow);
+      padding: 1.35rem 1.3rem 1.45rem;
+    }
+    .price-card h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.05rem;
+      font-weight: 650;
+    }
+    .price-card .range {
+      margin: 0 0 1rem;
+      font-family: var(--display);
+      font-size: 2rem;
+      letter-spacing: -0.02em;
+    }
+    .price-card .range span { color: var(--accent); }
+    .price-list {
+      list-style: none;
+      margin: 0 0 1.15rem;
+      padding: 0;
+      display: grid;
+      gap: 0.55rem;
+    }
+    .price-list li {
+      display: grid;
+      grid-template-columns: 1rem 1fr;
+      gap: 0.55rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .price-list li::before {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      margin-top: 0.45rem;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.15);
+    }
+
+    section { padding: 2.75rem 0; }
+    section + section { border-top: 1px solid var(--border); }
+    .section-head { margin-bottom: 1.5rem; max-width: 40rem; }
+    .section-head h2 {
+      margin: 0 0 0.55rem;
+      font-family: var(--display);
+      font-size: clamp(1.55rem, 3.5vw, 2rem);
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+    }
+    .section-head p { margin: 0; color: var(--muted); }
+
+    .cards {
+      display: grid;
+      gap: 0.9rem;
+    }
+    @media (min-width: 700px) {
+      .cards.three { grid-template-columns: repeat(3, 1fr); }
+    }
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.15rem 1.15rem 1.25rem;
+    }
+    .card h3 {
+      margin: 0 0 0.45rem;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .card p { margin: 0; color: var(--muted); font-size: 0.97rem; }
+    .card .kicker {
+      display: block;
+      margin-bottom: 0.45rem;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .include-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.75rem;
+    }
+    @media (min-width: 700px) {
+      .include-list { grid-template-columns: 1fr 1fr; }
+    }
+    .include-list li {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.05rem;
+    }
+    .include-list strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 1rem;
+    }
+    .include-list span { color: var(--muted); font-size: 0.94rem; }
+
+    .pricing-grid {
+      display: grid;
+      gap: 1rem;
+    }
+    @media (min-width: 760px) {
+      .pricing-grid { grid-template-columns: 1fr 1fr; align-items: stretch; }
+    }
+    .plan {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 2px);
+      padding: 1.35rem 1.25rem 1.45rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+    .plan.featured {
+      border-color: rgba(56, 189, 248, 0.45);
+      background:
+        linear-gradient(180deg, rgba(56, 189, 248, 0.08), transparent 42%),
+        var(--bg-card);
+      box-shadow: var(--shadow);
+    }
+    .plan-label {
+      margin: 0;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .plan h3 { margin: 0; font-size: 1.35rem; letter-spacing: -0.015em; }
+    .plan .amount {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 2.35rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .plan .amount small {
+      font-family: var(--font);
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+    .plan ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.5rem;
+      flex: 1;
+    }
+    .plan li {
+      color: var(--muted);
+      padding-left: 1.15rem;
+      position: relative;
+      font-size: 0.96rem;
+    }
+    .plan li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: var(--ok);
+    }
+    .honest {
+      margin-top: 1.15rem;
+      padding: 1rem 1.1rem;
+      border-radius: var(--radius);
+      border: 1px solid rgba(245, 193, 108, 0.25);
+      background: rgba(245, 193, 108, 0.07);
+      color: #F3E2B8;
+      font-size: 0.95rem;
+    }
+    .honest strong { color: var(--warm); }
+
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0.9rem;
+    }
+    @media (min-width: 700px) {
+      .steps { grid-template-columns: repeat(3, 1fr); }
+    }
+    .steps li {
+      counter-increment: step;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.15rem 1.3rem;
+      position: relative;
+    }
+    .steps li::before {
+      content: "0" counter(step);
+      display: inline-block;
+      margin-bottom: 0.65rem;
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      font-size: 0.85rem;
+    }
+    .steps h3 { margin: 0 0 0.4rem; font-size: 1.08rem; }
+    .steps p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+    .cta {
+      padding: 3rem 0 3.5rem;
+      background:
+        radial-gradient(700px 300px at 50% 0%, rgba(56, 189, 248, 0.14), transparent 65%),
+        var(--bg);
+    }
+    .cta-box {
+      width: min(100% - 2rem, 720px);
+      margin-inline: auto;
+      text-align: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 6px);
+      padding: 2rem 1.35rem;
+      box-shadow: var(--shadow);
+    }
+    .cta-box h2 {
+      margin: 0 0 0.6rem;
+      font-family: var(--display);
+      font-size: clamp(1.55rem, 3.5vw, 2rem);
+      letter-spacing: -0.015em;
+    }
+    .cta-box p {
+      margin: 0 auto 1.25rem;
+      color: var(--muted);
+      max-width: 34rem;
+    }
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .contact-row {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .contact-row a { font-weight: 650; }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .footer-inner {
+      width: min(100% - 2rem, var(--wide));
+      margin-inline: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-inner a { color: var(--muted); }
+    .footer-inner a:hover { color: var(--accent); }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="https://alex-caro.github.io/" aria-label="Alex Caro home">
+        <span class="logo-mark" aria-hidden="true">AC</span>
+        <span>Alex Caro <em>GBP Cleanup</em></span>
+      </a>
+      <div class="header-actions">
+        <a class="btn btn-secondary" href="tel:+18139194939">(813) 919-4939</a>
+        <a class="btn btn-primary" href="mailto:alex06caro@gmail.com?subject=GBP%20Cleanup%20inquiry">Email Alex</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Tampa / Gainesville local shops</p>
+          <h1 id="hero-title">Get your Google Business Profile cleaned up so customers can find you.</h1>
+          <p class="lead">
+            Wrong hours, missing photos, stale categories, and messy details make it harder for people nearby to trust your listing. I tidy the profile, fix what is out of date, and leave you with a clearer Google presence.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-lg" href="mailto:alex06caro@gmail.com?subject=GBP%20Cleanup%20inquiry">Start with an email</a>
+            <a class="btn btn-secondary btn-lg" href="#pricing">See pricing</a>
+          </div>
+          <p class="hero-note">
+            Better listings help customers find you. Results vary by market, competition, and how complete your info already is. No rank guarantees.
+          </p>
+        </div>
+
+        <aside class="price-card" aria-label="Offer overview">
+          <h2>Fixed-price cleanup</h2>
+          <p class="range"><span>From $149</span></p>
+          <ul class="price-list">
+            <li>Built for local shops, not agencies</li>
+            <li>Clear scope before any work starts</li>
+            <li>Tampa and Gainesville friendly turnaround</li>
+            <li>Optional photo and refresh guidance up to $350</li>
+          </ul>
+          <a class="btn btn-warm" href="#how">How it works</a>
+        </aside>
+      </div>
+    </section>
+
+    <section id="included" aria-labelledby="included-title">
+      <div class="narrow">
+        <div class="section-head">
+          <h2 id="included-title">What is included</h2>
+          <p>A practical cleanup of the public-facing details customers use when they search for a local business on Google.</p>
+        </div>
+        <ul class="include-list">
+          <li>
+            <strong>Profile review</strong>
+            <span>Walkthrough of name, categories, services, description, and attributes for accuracy and clarity.</span>
+          </li>
+          <li>
+            <strong>Hours and contact fixes</strong>
+            <span>Correct open hours, phone, website, and address formatting so people can reach you.</span>
+          </li>
+          <li>
+            <strong>Photo and media check</strong>
+            <span>Flag outdated, blurry, or missing images. Guidance on what to replace or add.</span>
+          </li>
+          <li>
+            <strong>Listing hygiene</strong>
+            <span>Clean up duplicates, incomplete fields, and inconsistent details that confuse searchers.</span>
+          </li>
+          <li>
+            <strong>Simple change log</strong>
+            <span>A short written summary of what changed and what still needs your input.</span>
+          </li>
+          <li>
+            <strong>Owner handoff</strong>
+            <span>Plain-language next steps so you can keep the profile accurate after the cleanup.</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="who" aria-labelledby="who-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="who-title">Who it is for</h2>
+          <p>Local owners who want a cleaner Google listing without hiring a big marketing firm.</p>
+        </div>
+        <div class="cards three">
+          <article class="card">
+            <span class="kicker">Shops</span>
+            <h3>Retail and storefronts</h3>
+            <p>Boutiques, repair shops, salons, and similar spots where hours and photos matter day to day.</p>
+          </article>
+          <article class="card">
+            <span class="kicker">Services</span>
+            <h3>Local service businesses</h3>
+            <p>Contractors, clinics, studios, and teams that get found by people searching nearby.</p>
+          </article>
+          <article class="card">
+            <span class="kicker">Area</span>
+            <h3>Tampa and Gainesville</h3>
+            <p>Built for Florida local shops. Remote-friendly process with phone and email support.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" aria-labelledby="pricing-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="pricing-title">Pricing</h2>
+          <p>Two clear options. You pick the scope that matches how much help you want.</p>
+        </div>
+        <div class="pricing-grid">
+          <article class="plan">
+            <p class="plan-label">Basic</p>
+            <h3>Profile cleanup</h3>
+            <p class="amount">$149</p>
+            <ul>
+              <li>Full listing review</li>
+              <li>Hours, contact, and category fixes</li>
+              <li>Description and attribute tidy-up</li>
+              <li>Written change summary</li>
+            </ul>
+            <a class="btn btn-secondary" href="mailto:alex06caro@gmail.com?subject=GBP%20Basic%20Cleanup%20%28%24149%29">Choose basic</a>
+          </article>
+          <article class="plan featured">
+            <p class="plan-label">Most popular</p>
+            <h3>Cleanup + photo refresh guidance</h3>
+            <p class="amount">$350 <small>all-in</small></p>
+            <ul>
+              <li>Everything in Basic</li>
+              <li>Photo and cover image recommendations</li>
+              <li>Shot list for stronger storefront and team photos</li>
+              <li>Short refresh plan you can follow later</li>
+            </ul>
+            <a class="btn btn-primary" href="mailto:alex06caro@gmail.com?subject=GBP%20Cleanup%20%2B%20Photo%20Guidance%20%28%24350%29">Choose full cleanup</a>
+          </article>
+        </div>
+        <p class="honest">
+          <strong>Honest note:</strong> A clearer Google Business Profile helps customers find accurate info about your shop. It does not guarantee a #1 ranking or a set number of new leads. Results vary.
+        </p>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="how-title">How it works</h2>
+          <p>Three steps. No account takeover games. You stay in control of your Google Business Profile.</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <h3>Send your listing</h3>
+            <p>Email the Google Business Profile link (or business name and city). Share manager access only if needed for edits.</p>
+          </li>
+          <li>
+            <h3>I clean it up</h3>
+            <p>I review the profile, fix outdated details in scope, and prepare photo guidance if you chose the $350 option.</p>
+          </li>
+          <li>
+            <h3>You get the handoff</h3>
+            <p>You receive a short change log and next steps so the listing stays accurate after we wrap.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="cta" id="contact" aria-labelledby="cta-title">
+      <div class="cta-box">
+        <h2 id="cta-title">Ready for a cleaner listing?</h2>
+        <p>
+          Tell me your shop name and city. I will confirm scope and which package fits before any work begins.
+        </p>
+        <div class="cta-actions">
+          <a class="btn btn-primary btn-lg" href="mailto:alex06caro@gmail.com?subject=GBP%20Cleanup%20inquiry">Email alex06caro@gmail.com</a>
+          <a class="btn btn-secondary btn-lg" href="tel:+18139194939">Call or text (813) 919-4939</a>
+        </div>
+        <p class="contact-row">
+          Hub:
+          <a href="https://alex-caro.github.io/">https://alex-caro.github.io/</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Alex Caro · Google Business Profile cleanup for Tampa and Gainesville local shops</p>
+      <p>
+        <a href="https://alex-caro.github.io/">Back to hub</a>
+        ·
+        <a href="mailto:alex06caro@gmail.com">alex06caro@gmail.com</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
