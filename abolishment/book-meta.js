@@ -3,10 +3,10 @@ window.BOOK_META = {
   subtitle: "An Anarcho-Syndicalist Manifesto",
   author: "Alexander Caro",
   year: 2026,
-  cta: "Buy it on Amazon",
+  cta: "Buy direct or on Amazon",
   headline: "The country is still called a republic. The owners are not voters.",
   blurb:
-    "A 2026 manifesto on corporate rule, managed consent, and what a workers' republic would actually require. Kindle $12.99 and paperback $15.00 on Amazon.",
+    "A 2026 manifesto on corporate rule, managed consent, and what a workers' republic would actually require. Direct $19.99 on Payhip, or Kindle $12.99 and paperback $15.00 on Amazon.",
   who: "Written for readers who already suspect the two parties are staff, not rivals. If you want a candidate brochure, this is not it. If you want the argument laid out in order, it is.",
   what: "Six chapters. Empire cycle. Labor and revolt. School as sorting and screens as the new hall monitor. Domestic politics as theater. Foreign policy at the edge of a larger war. A close that names a direction: federated production, workers' councils, peaceful popular abolishment of corporate rule.",
   stance: "Not a call to violence.",
