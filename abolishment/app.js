@@ -100,7 +100,8 @@ function nav(active) {
 function buyButtons() {
   return `
     <div class="row">
-      <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">${esc(B.cta)} · $${esc(B.price)}</a>
+      <a class="btn" href="${esc(B.amazonKindle)}" target="_blank" rel="noopener noreferrer">Kindle · $${esc(B.kindlePrice)}</a>
+      <a class="btn" href="${esc(B.amazonPaperback)}" target="_blank" rel="noopener noreferrer">Paperback · $${esc(B.paperbackPrice)}</a>
       <a class="btn ghost" href="#/read/front">Free sample</a>
     </div>`;
 }
@@ -113,7 +114,7 @@ function cover() {
       <div class="hero-grid">
         <img class="jacket" src="${coverImg()}" alt="Book cover. A United States flag before the White House at night.">
         <div>
-          <p class="kicker">${esc(B.subtitle)} · $${esc(B.price)}</p>
+          <p class="kicker">${esc(B.subtitle)} · Kindle $${esc(B.kindlePrice)} · Paperback $${esc(B.paperbackPrice)}</p>
           <p class="headline">${esc(B.headline)}</p>
           <h1>${esc(B.title)}</h1>
           <p class="author">${esc(B.author)}</p>
@@ -164,10 +165,10 @@ function venmoApp() {
 function buy() {
   return `
     <section class="pad narrow">
-      <p class="kicker">Digital edition · $${esc(B.price)}</p>
+      <p class="kicker">Amazon Kindle $${esc(B.kindlePrice)} · Paperback $${esc(B.paperbackPrice)}</p>
       <h1>${esc(B.cta)}</h1>
       <ol class="steps">
-        <li><b>1</b><span>Pay $${esc(B.price)} on Payhip. Card or PayPal. The file downloads to you.</span></li>
+        <li><b>1</b><span>Buy it on Amazon: Kindle $${esc(B.kindlePrice)} or paperback $${esc(B.paperbackPrice)}. Prefer a direct DRM-free ebook? It is $${esc(B.price)} on Payhip.</span></li>
         <li><b>2</b><span>Want to read it here too? Come back and tap I paid. Unlock this device.</span></li>
         <li><b>3</b><span>Venmo still works: @${esc(B.venmo)}, note ${esc(B.note)}.</span></li>
       </ol>
@@ -176,10 +177,11 @@ function buy() {
         <div>
           <p class="author">${esc(B.author)}</p>
           <p>${esc(B.title)}</p>
-          <p class="mono">Payhip · $${esc(B.price)} · instant download</p>
+          <p class="mono">Amazon · Kindle $${esc(B.kindlePrice)} · Paperback $${esc(B.paperbackPrice)}</p>
           <div class="row">
-            <a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">Buy on Payhip · $${esc(B.price)}</a>
-            <a class="btn ghost" href="${esc(B.payhipPage)}" target="_blank" rel="noopener noreferrer">Product page</a>
+            <a class="btn" href="${esc(B.amazonKindle)}" target="_blank" rel="noopener noreferrer">Kindle · $${esc(B.kindlePrice)}</a>
+            <a class="btn" href="${esc(B.amazonPaperback)}" target="_blank" rel="noopener noreferrer">Paperback · $${esc(B.paperbackPrice)}</a>
+            <a class="btn ghost" href="${esc(B.payhipPage)}" target="_blank" rel="noopener noreferrer">Direct ebook (Payhip) · $${esc(B.price)}</a>
           </div>
           <div class="row">
             <a class="btn ghost" href="${venmoApp()}">Venmo app</a>
@@ -244,7 +246,7 @@ async function readView(slug) {
         ${mdToHtml(md)}
         ${
           gated
-            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} on Payhip. Instant download.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">${esc(B.cta)} · $${esc(B.price)}</a></div>`
+            ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. Kindle $${esc(B.kindlePrice)} or paperback $${esc(B.paperbackPrice)} on Amazon.</p><a class="btn" href="${esc(B.amazonKindle)}" target="_blank" rel="noopener noreferrer">Kindle · $${esc(B.kindlePrice)}</a> <a class="btn ghost" href="${esc(B.amazonPaperback)}" target="_blank" rel="noopener noreferrer">Paperback · $${esc(B.paperbackPrice)}</a></div>`
             : ""
         }
         <nav class="turn">
