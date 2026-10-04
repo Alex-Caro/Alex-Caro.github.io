@@ -1,3 +1,10 @@
 # Paid deliverables must never be served from GitHub Pages
 downloads/
 *.zip
+
+# Paid (non-sample) manifesto chapters: kept off the public site
+abolishment/book/ch2.md
+abolishment/book/ch3.md
+abolishment/book/ch4.md
+abolishment/book/ch5.md
+abolishment/book/conclusion.md

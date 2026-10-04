@@ -50,6 +50,8 @@ function mdToHtml(md) {
 
 async function loadChapter(slug) {
   if (cache[slug]) return cache[slug];
+  const meta = B.toc.find((t) => t.slug === slug);
+  if (!meta || !meta.sample) throw new Error("locked");
   let r;
   try {
     r = await fetch(`./book/${encodeURIComponent(slug)}.md`, { credentials: "same-origin" });
@@ -200,8 +202,41 @@ function buy() {
     </section>`;
 }
 
+function sidebar(activeSlug) {
+  return B.toc
+    .map(
+      (t) =>
+        `<a href="#/read/${t.slug}" class="${t.slug === activeSlug ? "on" : ""}">${esc(t.title)}${t.sample ? "" : " · full book"}</a>`,
+    )
+    .join("");
+}
+
+function turnNav(slug) {
+  const idx = B.toc.findIndex((t) => t.slug === slug);
+  const prev = B.toc[idx - 1];
+  const next = B.toc[idx + 1];
+  return `<nav class="turn">
+          ${prev ? `<a href="#/read/${prev.slug}">← ${esc(prev.title)}</a>` : "<span></span>"}
+          ${next ? `<a href="#/read/${next.slug}">${esc(next.title)} →</a>` : "<span></span>"}
+        </nav>`;
+}
+
+function lockedView(item) {
+  return `
+    <section class="paper">
+      <aside>${sidebar(item.slug)}</aside>
+      <article>
+        <h1>${esc(item.title)}</h1>
+        <div class="gate"><p>This chapter is in the full book.</p><p>$${esc(B.price)} direct on Payhip (instant DRM-free download), or Kindle $${esc(B.kindlePrice)} / paperback $${esc(B.paperbackPrice)} on Amazon.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">Buy direct (Payhip) · $${esc(B.price)}</a> <a class="btn" href="${esc(B.amazonKindle)}" target="_blank" rel="noopener noreferrer">Kindle on Amazon · $${esc(B.kindlePrice)}</a> <a class="btn" href="${esc(B.amazonPaperback)}" target="_blank" rel="noopener noreferrer">Paperback on Amazon · $${esc(B.paperbackPrice)}</a> <a class="btn ghost" href="#/read/front">Free sample</a></div>
+        ${turnNav(item.slug)}
+      </article>
+    </section>`;
+}
+
 async function readView(slug) {
   const item = B.toc.find((t) => t.slug === slug) || B.toc[0];
+  // Non-sample chapters are not hosted on this site; never fetch them.
+  if (!item.sample) return lockedView(item);
   const full = unlocked();
   let md;
   try {
@@ -230,18 +265,10 @@ async function readView(slug) {
     }
     gated = true;
   }
-  const idx = B.toc.findIndex((t) => t.slug === item.slug);
-  const prev = B.toc[idx - 1];
-  const next = B.toc[idx + 1];
   return `
     <section class="paper">
       <aside>
-        ${B.toc
-          .map(
-            (t) =>
-              `<a href="#/read/${t.slug}" class="${t.slug === item.slug ? "on" : ""}">${esc(t.title)}</a>`,
-          )
-          .join("")}
+        ${sidebar(item.slug)}
       </aside>
       <article>
         ${mdToHtml(md)}
@@ -250,10 +277,7 @@ async function readView(slug) {
             ? `<div class="gate"><p>${esc(B.cta)}</p><p>Sample ends here. $${esc(B.price)} direct on Payhip, or Kindle $${esc(B.kindlePrice)} / paperback $${esc(B.paperbackPrice)} on Amazon.</p><a class="btn" href="${esc(B.payhip)}" target="_blank" rel="noopener noreferrer">Buy direct (Payhip) · $${esc(B.price)}</a> <a class="btn" href="${esc(B.amazonKindle)}" target="_blank" rel="noopener noreferrer">Kindle on Amazon · $${esc(B.kindlePrice)}</a> <a class="btn" href="${esc(B.amazonPaperback)}" target="_blank" rel="noopener noreferrer">Paperback on Amazon · $${esc(B.paperbackPrice)}</a></div>`
             : ""
         }
-        <nav class="turn">
-          ${prev ? `<a href="#/read/${prev.slug}">← ${esc(prev.title)}</a>` : "<span></span>"}
-          ${next ? `<a href="#/read/${next.slug}">${esc(next.title)} →</a>` : "<span></span>"}
-        </nav>
+        ${turnNav(item.slug)}
       </article>
     </section>`;
 }
